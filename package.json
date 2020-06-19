@@ -1,0 +1,27 @@
+{
+  "name": "typescript-template",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "start": "npm run build && node dist/index.js",
+    "build": "tsc",
+    "test": "npm run build && jasmine --reporter=jasmine-console-reporter --config=jasmine.json"
+  },
+  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+"
+  },
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/jasmine": "^3.5.3",
+    "@types/node": "^13.7.1",
+    "jasmine": "^3.5.0",
+    "jasmine-console-reporter": "^3.1.0",
+    "ts-node": "^8.6.2",
+    "typescript": "^3.7.5"
+  }
+}
