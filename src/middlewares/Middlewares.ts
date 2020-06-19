@@ -1,0 +1,10 @@
+import { Message, Client, Role } from "discord.js";
+
+const DEVELOPER_IDS:Array<string>=["112900545299136512"];
+
+export class Middlewares{
+
+    static isDeveloper(msg:Message,client:Client,params:any,next:any){
+        return DEVELOPER_IDS.includes(msg.member.id) ? next() : msg.channel.send("No permission for that command");
+    }
+}
