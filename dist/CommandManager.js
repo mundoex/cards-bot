@@ -27,29 +27,29 @@ discord_bot_express_2.CommandManager.command("give :player trades :trades", Midd
 discord_bot_express_2.CommandManager.command("give :player luck :luckModifier", Middlewares_1.Middlewares.isDeveloper, CardClient_1.CardClient.givePlayerLuck); //check
 //###################### SHOP COMMANDS ######################
 discord_bot_express_2.CommandManager.command("shop info", CardClient_1.CardClient.shopInfo); //check
-discord_bot_express_2.CommandManager.command("shop buy :packName*", CardClient_1.CardClient.shopBuy);
-discord_bot_express_2.CommandManager.command("shop buyx :ammount :packName*", CardClient_1.CardClient.shopBuyX);
+discord_bot_express_2.CommandManager.command("shop buy :packName*", CardClient_1.CardClient.shopBuy); //check
+discord_bot_express_2.CommandManager.command("shop buyx :ammount :packName*", CardClient_1.CardClient.shopBuyX); //check
 //###################### TRADER COMMANDS ######################
 discord_bot_express_2.CommandManager.command("trader info", CardClient_1.CardClient.traderInfo); //check
 discord_bot_express_2.CommandManager.command("trader sell :cardName", CardClient_1.CardClient.traderSell);
 discord_bot_express_2.CommandManager.command("trader reroll :cardName1 :cardName2 :cardName3", CardClient_1.CardClient.traderReroll);
 discord_bot_express_2.CommandManager.command("trader guess :stars", CardClient_1.CardClient.traderGuess);
 //###################### CARDS COMMANDS ######################
-discord_bot_express_2.CommandManager.command("card info :cardValue", CardClient_1.CardClient.cardInfo); //half check
+discord_bot_express_2.CommandManager.command("card info :cardValue*", CardClient_1.CardClient.cardInfo); //check
 discord_bot_express_2.CommandManager.command("card search :cardName", CardClient_1.CardClient.cardSearch); //check
 //###################### PACKS COMMANDS ######################
-discord_bot_express_2.CommandManager.command("pack info :packValue", CardClient_1.CardClient.packInfo); //half check
+discord_bot_express_2.CommandManager.command("pack info :packValue*", CardClient_1.CardClient.packInfo); //check
 //###################### PROFILE COMMANDS ######################
 discord_bot_express_2.CommandManager.command("my profile", CardClient_1.CardClient.myProfile); //check
-discord_bot_express_2.CommandManager.command("my cards", CardClient_1.CardClient.myCards); //no check
-discord_bot_express_2.CommandManager.command("my packs", CardClient_1.CardClient.myPacks);
-discord_bot_express_2.CommandManager.command("profile :mention", CardClient_1.CardClient.profile); //no check
-discord_bot_express_2.CommandManager.command("profile cards :mention", CardClient_1.CardClient.profileCards);
-discord_bot_express_2.CommandManager.command("profile packs :mention", CardClient_1.CardClient.profilePacks);
+discord_bot_express_2.CommandManager.command("my cards", CardClient_1.CardClient.myCards); //check
+discord_bot_express_2.CommandManager.command("my packs", CardClient_1.CardClient.myPacks); //check
+discord_bot_express_2.CommandManager.command("profile :mention", CardClient_1.CardClient.profile); //check
+discord_bot_express_2.CommandManager.command("profile cards :mention", CardClient_1.CardClient.profileCards); //check
+discord_bot_express_2.CommandManager.command("profile packs :mention", CardClient_1.CardClient.profilePacks); //check
 discord_bot_express_2.CommandManager.command("leaderboard gold", CardClient_1.CardClient.leaderboardGold);
 discord_bot_express_2.CommandManager.command("leaderboard cards", CardClient_1.CardClient.leaderboardCards);
 discord_bot_express_2.CommandManager.command("leaderboard stars", CardClient_1.CardClient.leaderboardStars);
 //###################### PLAYER COMMANDS ######################
-discord_bot_express_2.CommandManager.command("wish :cardName", CardClient_1.CardClient.wish);
-discord_bot_express_2.CommandManager.command("open pack :packName*", CardClient_1.CardClient.packOpen);
+discord_bot_express_2.CommandManager.command("wish :cardName", CardClient_1.CardClient.wish); //check
+discord_bot_express_2.CommandManager.command("open pack :packName*", CardClient_1.CardClient.packOpen); //check
 discord_bot_express_2.CommandManager.command("trade :userName :cardName", (msg) => msg.channel.send("Not implemented"));

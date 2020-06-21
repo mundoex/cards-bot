@@ -15,5 +15,6 @@ export declare class Shop extends ItemGenerator<Pack> {
     fillShop(): void;
     forceRestock(): void;
     sellItem(itemId: number, ammount?: number): void;
+    hasStock(packId: number): boolean;
     print(): void;
 }

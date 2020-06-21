@@ -7,7 +7,7 @@ import { Player } from "../player/Player";
 import { Inventory } from "../inventory/Inventory";
 export declare class EmbedsManager {
     private static readonly CARDS_PER_TABLE;
-    static readonly PAGINATION_TIMEOUT: number;
+    static readonly PAGINATION_TIMEOUT = 2000;
     private static readonly CLEAN_CACHE_TIMEOUT;
     private static packsEmbedCache;
     private static playerCardsEmbedCache;
@@ -21,8 +21,8 @@ export declare class EmbedsManager {
     static getShopHelpEmbed(): MessageEmbed;
     static getTraderHelpEmbed(): MessageEmbed;
     static getPackEmbedPages(pack: Pack): MessageEmbed[];
-    static getPlayerCardsEmbedPages(player: Player): MessageEmbed[];
-    static getPlayerPacksEmbedPages(player: Player): MessageEmbed[];
+    static getPlayerCardsEmbedPages(player: Player): Array<MessageEmbed>;
+    static getPlayerPacksEmbedPages(player: Player): Array<MessageEmbed>;
     static generatePlayerCardsEmbedPages(player: Player): Array<MessageEmbed>;
     static generatePlayerPacksEmbedPages(player: Player): Array<MessageEmbed>;
     private static generatePackCardsEmbedPages;
@@ -32,5 +32,5 @@ export declare class EmbedsManager {
     static traderInfoEmbedMessage(trader: Trader): MessageEmbed;
     static playerEmbedMessage(title: string, player: Player): MessageEmbed;
     static needersEmojiFilter(reaction: MessageReaction, user: User): boolean;
-    static inventoryEmbed(inv: Inventory): MessageEmbed;
+    static shopInventoryEmbed(inv: Inventory): MessageEmbed;
 }

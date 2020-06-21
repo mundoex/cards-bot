@@ -65,6 +65,9 @@ class Shop extends ItemGenerator_1.ItemGenerator {
             this.fillShop();
         }
     }
+    hasStock(packId) {
+        return this.inventory.items.has(packId);
+    }
     print() {
         for (const [key, value] of this.inventory.items.entries()) {
             console.log(key, value);

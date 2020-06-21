@@ -77,15 +77,22 @@ class EmbedsManager {
         }
     }
     static getPlayerCardsEmbedPages(player) {
-        return EmbedsManager.generatePlayerCardsEmbedPages(player);
+        this.playerCardsEmbedCache.set(player.id, EmbedsManager.generatePlayerCardsEmbedPages(player));
+        return this.playerCardsEmbedCache.get(player.id);
     }
     static getPlayerPacksEmbedPages(player) {
-        return EmbedsManager.generatePlayerPacksEmbedPages(player);
+        this.playerPacksEmbedCache.set(player.id, EmbedsManager.generatePlayerPacksEmbedPages(player));
+        return this.playerPacksEmbedCache.get(player.id);
     }
     static generatePlayerCardsEmbedPages(player) {
         let embedsResult = new Array();
         let table = new AsciiTable().setHeading("Name", "Quantity", "Rarity");
         let counter = 0;
+        //empty
+        if (player.cards.items.size <= 0) {
+            embedsResult.push(new discord_js_1.MessageEmbed().setTitle("Cards Collection").setDescription("Empty"));
+            return embedsResult;
+        }
         for (const [key, value] of player.cards.items.entries()) {
             const card = CardManager_1.CardManager.getInstance().getItemById(key);
             if (counter === EmbedsManager.CARDS_PER_TABLE) {
@@ -97,7 +104,6 @@ class EmbedsManager {
                 table.addRow(card.name, value, card.stars);
                 counter++;
             }
-            table.addRow(card.name, value, card.stars);
         }
         embedsResult.push(new discord_js_1.MessageEmbed().setTitle("Cards Collection").setDescription("```" + table.toString() + "```"));
         return embedsResult;
@@ -106,6 +112,11 @@ class EmbedsManager {
         let embedsResult = new Array();
         let table = new AsciiTable().setHeading("Name", "Quantity", "Rarity");
         let counter = 0;
+        //empty
+        if (player.packs.items.size <= 0) {
+            embedsResult.push(new discord_js_1.MessageEmbed().setTitle("Packs Collection").setDescription("Empty"));
+            return embedsResult;
+        }
         for (const [key, value] of player.packs.items.entries()) {
             const pack = PackManager_1.PackManager.getInstance().getItemById(key);
             if (counter === EmbedsManager.CARDS_PER_TABLE) {
@@ -117,7 +128,6 @@ class EmbedsManager {
                 table.addRow(pack.name, value, pack.rarity.stars);
                 counter++;
             }
-            table.addRow(pack.name, value, pack.rarity.stars);
         }
         embedsResult.push(new discord_js_1.MessageEmbed().setTitle("Packs Collection").setDescription("```" + table.toString() + "```"));
         return embedsResult;
@@ -193,7 +203,7 @@ class EmbedsManager {
     static needersEmojiFilter(reaction, user) {
         return reaction.emoji.name === "👍" && user.bot === false;
     }
-    static inventoryEmbed(inv) {
+    static shopInventoryEmbed(inv) {
         let table = new AsciiTable().setHeading("Item", "Ammount");
         if (inv.empty()) {
             for (const [key, value] of inv.items.entries()) {
@@ -208,7 +218,7 @@ class EmbedsManager {
 }
 exports.EmbedsManager = EmbedsManager;
 EmbedsManager.CARDS_PER_TABLE = 30;
-EmbedsManager.PAGINATION_TIMEOUT = 60 * 1000;
+EmbedsManager.PAGINATION_TIMEOUT = 2000; //60*1000;
 EmbedsManager.CLEAN_CACHE_TIMEOUT = 10 * 60 * 1000;
 EmbedsManager.packsEmbedCache = new Map();
 EmbedsManager.playerCardsEmbedCache = new Map();

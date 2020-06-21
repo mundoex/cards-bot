@@ -14,11 +14,12 @@ const  AsciiTable = require("ascii-table");
 const emojis:any={0: '0️⃣', 1: '1️⃣',2: '2️⃣', 3: '3️⃣', 4: '4️⃣', 5: '5️⃣',6: '6️⃣', 7: '7️⃣', 8: '8️⃣', 9: '9️⃣',10: '🔟'};
 export class EmbedsManager{
 private static readonly CARDS_PER_TABLE=30;
-public static readonly PAGINATION_TIMEOUT=60*1000;
+public static readonly PAGINATION_TIMEOUT=2000;//60*1000;
 private static readonly CLEAN_CACHE_TIMEOUT=10*60*1000;
 private static packsEmbedCache=new Map<number,Array<MessageEmbed>>();
 private static playerCardsEmbedCache=new Map<string,Array<MessageEmbed>>();
 private static playerPacksEmbedCache=new Map<string,Array<MessageEmbed>>();
+
     static getHelpEmbed() : MessageEmbed{
         return new MessageEmbed().setTitle("Help Commands")
         .addField("game help","Gives some knowledge about the game")
@@ -95,18 +96,25 @@ private static playerPacksEmbedCache=new Map<string,Array<MessageEmbed>>();
         }
     }
 
-    static getPlayerCardsEmbedPages(player:Player){
-        return EmbedsManager.generatePlayerCardsEmbedPages(player);
+    static getPlayerCardsEmbedPages(player:Player) : Array<MessageEmbed>{
+        this.playerCardsEmbedCache.set(player.id,EmbedsManager.generatePlayerCardsEmbedPages(player));
+        return this.playerCardsEmbedCache.get(player.id);
     }
 
-    static getPlayerPacksEmbedPages(player:Player){
-        return EmbedsManager.generatePlayerPacksEmbedPages(player);
+    static getPlayerPacksEmbedPages(player:Player): Array<MessageEmbed>{
+        this.playerPacksEmbedCache.set(player.id,EmbedsManager.generatePlayerPacksEmbedPages(player));
+        return this.playerPacksEmbedCache.get(player.id);
     }
 
     static generatePlayerCardsEmbedPages(player:Player) : Array<MessageEmbed>{
         let embedsResult=new Array<MessageEmbed>();
         let table=new AsciiTable().setHeading("Name","Quantity","Rarity");
         let counter=0;
+        //empty
+        if(player.cards.items.size<=0){
+            embedsResult.push(new MessageEmbed().setTitle("Cards Collection").setDescription("Empty"));
+            return embedsResult;
+        }
         for (const [key,value] of player.cards.items.entries()) {
             const card:Card=CardManager.getInstance().getItemById(key);
             if(counter===EmbedsManager.CARDS_PER_TABLE){  
@@ -117,7 +125,6 @@ private static playerPacksEmbedCache=new Map<string,Array<MessageEmbed>>();
                 table.addRow(card.name,value,card.stars);
                 counter++;
             }
-            table.addRow(card.name,value,card.stars);
         }
         embedsResult.push(new MessageEmbed().setTitle("Cards Collection").setDescription("```"+table.toString()+"```"));
         return embedsResult;
@@ -127,6 +134,11 @@ private static playerPacksEmbedCache=new Map<string,Array<MessageEmbed>>();
         let embedsResult=new Array<MessageEmbed>();
         let table=new AsciiTable().setHeading("Name","Quantity","Rarity");
         let counter=0;
+        //empty
+        if(player.packs.items.size<=0){
+            embedsResult.push(new MessageEmbed().setTitle("Packs Collection").setDescription("Empty"));
+            return embedsResult;
+        }
         for (const [key,value] of player.packs.items.entries()) {
             const pack:Pack=PackManager.getInstance().getItemById(key);
             if(counter===EmbedsManager.CARDS_PER_TABLE){  
@@ -137,7 +149,6 @@ private static playerPacksEmbedCache=new Map<string,Array<MessageEmbed>>();
                 table.addRow(pack.name,value,pack.rarity.stars);
                 counter++;
             }
-            table.addRow(pack.name,value,pack.rarity.stars);
         }
         embedsResult.push(new MessageEmbed().setTitle("Packs Collection").setDescription("```"+table.toString()+"```"));
         return embedsResult;
@@ -222,7 +233,7 @@ private static playerPacksEmbedCache=new Map<string,Array<MessageEmbed>>();
         return reaction.emoji.name==="👍" && user.bot===false;
     }
 
-    static inventoryEmbed(inv:Inventory){
+    static shopInventoryEmbed(inv:Inventory){
         let table=new AsciiTable().setHeading("Item","Ammount");
         if(inv.empty()){
             for(const [key,value] of inv.items.entries()){

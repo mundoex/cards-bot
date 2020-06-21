@@ -27,29 +27,29 @@ CommandManager.command("give :player trades :trades",Middlewares.isDeveloper,Car
 CommandManager.command("give :player luck :luckModifier",Middlewares.isDeveloper,CardClient.givePlayerLuck);    //check
 //###################### SHOP COMMANDS ######################
 CommandManager.command("shop info",CardClient.shopInfo);    //check
-CommandManager.command("shop buy :packName*",CardClient.shopBuy);
-CommandManager.command("shop buyx :ammount :packName*",CardClient.shopBuyX);
+CommandManager.command("shop buy :packName*",CardClient.shopBuy);   //check
+CommandManager.command("shop buyx :ammount :packName*",CardClient.shopBuyX);    //check
 //###################### TRADER COMMANDS ######################
 CommandManager.command("trader info",CardClient.traderInfo);    //check
 CommandManager.command("trader sell :cardName",CardClient.traderSell);
 CommandManager.command("trader reroll :cardName1 :cardName2 :cardName3",CardClient.traderReroll);
 CommandManager.command("trader guess :stars",CardClient.traderGuess);
 //###################### CARDS COMMANDS ######################
-CommandManager.command("card info :cardValue",CardClient.cardInfo);     //half check
+CommandManager.command("card info :cardValue*",CardClient.cardInfo);     //check
 CommandManager.command("card search :cardName",CardClient.cardSearch);      //check
 //###################### PACKS COMMANDS ######################
-CommandManager.command("pack info :packValue",CardClient.packInfo);        //half check
+CommandManager.command("pack info :packValue*",CardClient.packInfo);        //check
 //###################### PROFILE COMMANDS ######################
 CommandManager.command("my profile",CardClient.myProfile);      //check
-CommandManager.command("my cards",CardClient.myCards);      //no check
-CommandManager.command("my packs",CardClient.myPacks);
-CommandManager.command("profile :mention",CardClient.profile);      //no check
-CommandManager.command("profile cards :mention",CardClient.profileCards);
-CommandManager.command("profile packs :mention",CardClient.profilePacks);
+CommandManager.command("my cards",CardClient.myCards);      //check
+CommandManager.command("my packs",CardClient.myPacks);  //check
+CommandManager.command("profile :mention",CardClient.profile);      //check
+CommandManager.command("profile cards :mention",CardClient.profileCards);   //check
+CommandManager.command("profile packs :mention",CardClient.profilePacks);   //check
 CommandManager.command("leaderboard gold",CardClient.leaderboardGold);
 CommandManager.command("leaderboard cards",CardClient.leaderboardCards);
 CommandManager.command("leaderboard stars",CardClient.leaderboardStars);
 //###################### PLAYER COMMANDS ######################
-CommandManager.command("wish :cardName",CardClient.wish);
-CommandManager.command("open pack :packName*",CardClient.packOpen);
+CommandManager.command("wish :cardName",CardClient.wish);   //check
+CommandManager.command("open pack :packName*",CardClient.packOpen); //check
 CommandManager.command("trade :userName :cardName",(msg:Message)=>msg.channel.send("Not implemented"));

@@ -174,7 +174,7 @@ class CardClient {
         let player = PlayerHandler_1.PlayerHandler.getInstance().getPlayerById(msg.author.id);
         const pack = PackManager_1.PackManager.getInstance().getItemByName(packName);
         if (player !== undefined && pack !== undefined) {
-            const hasPackInStore = CardMain_1.server.shop.contains(pack.id);
+            const hasPackInStore = CardMain_1.server.shop.hasStock(pack.id);
             if (hasPackInStore) {
                 const bought = player.buyPack(pack);
                 if (bought) {
@@ -186,8 +186,11 @@ class CardClient {
                 }
             }
             else {
-                msg.channel.send("Player or pack not found");
+                msg.channel.send("Pack not in store");
             }
+        }
+        else {
+            msg.channel.send("No player or pack found");
         }
     }
     //shop buyx :ammount :packName*
@@ -210,10 +213,16 @@ class CardClient {
                         msg.channel.send("You don't have enough money");
                     }
                 }
+                else {
+                    msg.channel.send("Not enough packs available");
+                }
             }
             else {
                 msg.channel.send("Player or pack not found");
             }
+        }
+        else {
+            msg.channel.send("No player or pack found");
         }
     }
     //###################### TRADER COMMANDS ######################  
@@ -247,10 +256,11 @@ class CardClient {
         msg.channel.send("Nah no gambling yet");
     }
     //###################### CARDS COMMANDS ######################
-    //card info :cardValue
+    //card info :cardValue*
     static cardInfo(msg, client, params) {
+        const cardValue = params.cardValue.join(" ");
         let card;
-        Mathf_1.Mathf.isNumeric(params.cardValue) ? card = CardManager_1.CardManager.getInstance().getItemById(parseInt(params.cardValue)) : card = CardManager_1.CardManager.getInstance().getItemByName(params.cardValue);
+        Mathf_1.Mathf.isNumeric(cardValue) ? card = CardManager_1.CardManager.getInstance().getItemById(parseInt(cardValue)) : card = CardManager_1.CardManager.getInstance().getItemByName(cardValue);
         if (card) {
             const embed = EmbedsManager_1.EmbedsManager.cardInfoEmbedMessage(card);
             msg.channel.send(embed);
@@ -271,10 +281,11 @@ class CardClient {
         }
     }
     //###################### PACKS COMMANDS ######################
-    //pack info :packValue
+    //pack info :packValue*
     static packInfo(msg, client, params) {
+        const packValue = params.packValue.join(" ");
         let pack;
-        Mathf_1.Mathf.isNumeric(params.packValue) ? pack = PackManager_1.PackManager.getInstance().getItemById(parseInt(params.packValue)) : pack = PackManager_1.PackManager.getInstance().getItemByName(params.packValue);
+        Mathf_1.Mathf.isNumeric(packValue) ? pack = PackManager_1.PackManager.getInstance().getItemById(parseInt(packValue)) : pack = PackManager_1.PackManager.getInstance().getItemByName(packValue);
         if (pack) {
             paginationEmbed(msg, EmbedsManager_1.EmbedsManager.getPackEmbedPages(pack), ['⏪', '⏩'], EmbedsManager_1.EmbedsManager.PAGINATION_TIMEOUT);
         }
@@ -298,7 +309,8 @@ class CardClient {
     static myCards(msg, client, params) {
         let player = PlayerHandler_1.PlayerHandler.getInstance().getPlayerById(msg.author.id);
         if (player) {
-            paginationEmbed(EmbedsManager_1.EmbedsManager.getPlayerCardsEmbedPages(player));
+            const embeds = EmbedsManager_1.EmbedsManager.getPlayerCardsEmbedPages(player);
+            paginationEmbed(msg, embeds, ['⏪', '⏩'], EmbedsManager_1.EmbedsManager.PAGINATION_TIMEOUT);
         }
         else {
             msg.channel.send("Error finding player");
@@ -308,7 +320,8 @@ class CardClient {
     static myPacks(msg, client, params) {
         let player = PlayerHandler_1.PlayerHandler.getInstance().getPlayerById(msg.author.id);
         if (player) {
-            paginationEmbed(EmbedsManager_1.EmbedsManager.getPlayerPacksEmbedPages(player));
+            const embeds = EmbedsManager_1.EmbedsManager.getPlayerPacksEmbedPages(player);
+            paginationEmbed(msg, embeds, ['⏪', '⏩'], EmbedsManager_1.EmbedsManager.PAGINATION_TIMEOUT);
         }
         else {
             msg.channel.send("Error finding player");
@@ -328,7 +341,8 @@ class CardClient {
     static profileCards(msg, client, params) {
         let player = PlayerHandler_1.PlayerHandler.getInstance().getPlayerById(msg.mentions.users.first().id);
         if (player) {
-            paginationEmbed(EmbedsManager_1.EmbedsManager.getPlayerCardsEmbedPages(player));
+            const embeds = EmbedsManager_1.EmbedsManager.getPlayerCardsEmbedPages(player);
+            paginationEmbed(msg, embeds, ['⏪', '⏩'], EmbedsManager_1.EmbedsManager.PAGINATION_TIMEOUT);
         }
         else {
             msg.channel.send("Error finding player");
@@ -338,7 +352,14 @@ class CardClient {
     static profilePacks(msg, client, params) {
         let player = PlayerHandler_1.PlayerHandler.getInstance().getPlayerById(msg.mentions.users.first().id);
         if (player) {
-            paginationEmbed(EmbedsManager_1.EmbedsManager.getPlayerPacksEmbedPages(player));
+            try {
+                const embeds = EmbedsManager_1.EmbedsManager.getPlayerPacksEmbedPages(player);
+                paginationEmbed(msg, embeds, ['⏪', '⏩'], EmbedsManager_1.EmbedsManager.PAGINATION_TIMEOUT);
+            }
+            catch (err) {
+                console.log(err);
+            }
+            ;
         }
         else {
             msg.channel.send("Error finding player");

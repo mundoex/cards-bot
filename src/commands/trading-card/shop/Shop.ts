@@ -69,6 +69,10 @@ export class Shop extends ItemGenerator<Pack>{
         }
     }
 
+    hasStock(packId:number){
+        return this.inventory.items.has(packId);
+    }
+
     print(){
         for (const [key, value] of this.inventory.items.entries()) {
             console.log(key, value);

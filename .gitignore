@@ -1,4 +1,4 @@
 node_modules
-dist/
+dist/*
 src/secret.json
-/src/commands/trading-card/database/players/
+src/commands/trading-card/database/players/*

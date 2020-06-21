@@ -28,6 +28,6 @@ class TimedEventsManager {
     }
 }
 exports.TimedEventsManager = TimedEventsManager;
-TimedEventsManager.PLAYER_RATE = 5100; //60*60*1000;
-TimedEventsManager.SHOP_RATE = 5200; //2*60*60*1000;
-TimedEventsManager.TRADER_RATE = 5300; //24*60*60*1000;
+TimedEventsManager.PLAYER_RATE = 60 * 60 * 1000;
+TimedEventsManager.SHOP_RATE = 2 * 60 * 60 * 1000;
+TimedEventsManager.TRADER_RATE = 24 * 60 * 60 * 1000;
