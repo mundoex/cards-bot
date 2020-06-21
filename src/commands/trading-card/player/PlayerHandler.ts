@@ -28,7 +28,9 @@ export class PlayerHandler{
             const playerSaveData:PlayerSaveData = JSON.parse(readFileSync(playerFilePath).toString());
             player=Player.fromSaveData(playerSaveData);
         }else{
-            player=PlayerFactory.createStarterPlayer(id);
+            const newPlayer=PlayerFactory.createStarterPlayer(id);
+            newPlayer.save();
+            return this.load(id);
         }
         this.addToPlayersCache(player);
         player.save();

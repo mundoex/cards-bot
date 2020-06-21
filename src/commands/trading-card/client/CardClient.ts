@@ -394,7 +394,7 @@ export class CardClient{
     //open pack :packName
     static packOpen(msg:Message, client:Client, params:any){
         const packName:string=params.packName.join(" ");
-        let player=PlayerHandler.getInstance().getPlayerById(msg.member.id);
+        let player=PlayerHandler.getInstance().getPlayerById(msg.author.id);
         const pack=PackManager.getInstance().getItemByName(packName);
         if(player!==undefined && pack!==undefined){
             const cards:Array<Card>=player.openPack(pack);
@@ -424,6 +424,8 @@ export class CardClient{
                     if(neederPlayer.hasClaims()){
                         neederPlayer.removeClaim();
                         neederPlayers.push(neederPlayer);
+                    }else{
+                        msg.channel.send(`${user.username} has no claims left`);
                     }
                 }
             });
