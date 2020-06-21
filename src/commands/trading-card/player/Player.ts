@@ -94,7 +94,8 @@ export class Player{
             const cards=pack.open(this.dryStreak,this.luckModifier,this.cardWishId);
             const ultraCards=cards.map((card:Card)=>{ if(Rarity.isInUltraRange(card.stars)){ return card; }});
             ultraCards.length!==0 ? this.dryStreak=0 : this.dryStreak++;
-            this.save();  
+            this.save();
+            return cards;
         }else{
             return undefined;
         }
