@@ -6,7 +6,7 @@ import { Card } from "../cards/Card";
 
 export class Trader {
     private static readonly NEED_CAPACITY=5;
-    private static readonly MULTIPLIER=5
+    private static readonly MULTIPLIER=6;
     needIds:Array<number>;
 
     constructor() {

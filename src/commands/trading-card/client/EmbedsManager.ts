@@ -14,7 +14,7 @@ const  AsciiTable = require("ascii-table");
 const emojis:any={0: '0️⃣', 1: '1️⃣',2: '2️⃣', 3: '3️⃣', 4: '4️⃣', 5: '5️⃣',6: '6️⃣', 7: '7️⃣', 8: '8️⃣', 9: '9️⃣',10: '🔟'};
 export class EmbedsManager{
 private static readonly CARDS_PER_TABLE=30;
-public static readonly PAGINATION_TIMEOUT=2000;//60*1000;
+public static readonly PAGINATION_TIMEOUT=60*1000;
 private static readonly CLEAN_CACHE_TIMEOUT=10*60*1000;
 private static packsEmbedCache=new Map<number,Array<MessageEmbed>>();
 private static playerCardsEmbedCache=new Map<string,Array<MessageEmbed>>();

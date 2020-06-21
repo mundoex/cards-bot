@@ -31,7 +31,7 @@ CommandManager.command("shop buy :packName*",CardClient.shopBuy);   //check
 CommandManager.command("shop buyx :ammount :packName*",CardClient.shopBuyX);    //check
 //###################### TRADER COMMANDS ######################
 CommandManager.command("trader info",CardClient.traderInfo);    //check
-CommandManager.command("trader sell :cardName",CardClient.traderSell);
+CommandManager.command("trader sell :cardName*",CardClient.traderSell);
 CommandManager.command("trader reroll :cardName1 :cardName2 :cardName3",CardClient.traderReroll);
 CommandManager.command("trader guess :stars",CardClient.traderGuess);
 //###################### CARDS COMMANDS ######################

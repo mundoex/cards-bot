@@ -238,11 +238,13 @@ export class CardClient{
     //trader sell :cardName
     static traderSell(msg:Message, client:Client, params:any){
         let player=PlayerHandler.getInstance().getPlayerById(msg.author.id);
-        const card=CardManager.getInstance().getItemByName(params.cardName);
+        const card=CardManager.getInstance().getItemByName(params.cardName.join(" "));
         if(player!==undefined && card!==undefined){
             if(player.hasCard(card) && server.trader.hasBounty(card)){
                 player.removeCard(card);
-                player.addGold(server.trader.bountyPrice(card.stars));
+                const gold=server.trader.bountyPrice(card.stars);
+                player.addGold(gold);
+                msg.channel.send(`You sold ${card.name} for ${gold} gold.`)
             }else{
                 msg.channel.send("You or the trader dont have that card");
             }

@@ -6,6 +6,7 @@ import { writeFileSync } from "fs";
 import { CardManager } from "../cards/CardManager";
 import { Pack } from "../packs/Pack";
 import { PackManager } from "../packs/PackManager";
+import { Rarity } from "../drop-generation/Rarity";
 
 export class Player{
     private static readonly GOLD_RATE=125;
@@ -89,7 +90,11 @@ export class Player{
     openPack(pack:Pack) : Array<Card>{
         if(this.packs.contains(pack.id)){
             this.removePack(pack);
-            return pack.open(this.dryStreak,this.luckModifier,this.cardWishId); 
+            this.packsOpened++;
+            const cards=pack.open(this.dryStreak,this.luckModifier,this.cardWishId);
+            const ultraCards=cards.map((card:Card)=>{ if(Rarity.isInUltraRange(card.stars)){ return card; }});
+            ultraCards.length!==0 ? this.dryStreak=0 : this.dryStreak++;
+            this.save();  
         }else{
             return undefined;
         }

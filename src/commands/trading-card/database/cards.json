@@ -2783,7 +2783,7 @@
       "name":"Staraptor",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/staraptor.jpg",
-      "stars":5
+      "stars":6
    },
    {
       "id":399,
@@ -2797,7 +2797,7 @@
       "name":"Bibarel",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/bibarel.jpg",
-      "stars":2
+      "stars":3
    },
    {
       "id":401,
@@ -2853,49 +2853,49 @@
       "name":"Cranidos",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/cranidos.jpg",
-      "stars":2
+      "stars":4
    },
    {
       "id":409,
       "name":"Rampardos",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/rampardos.jpg",
-      "stars":4
+      "stars":5
    },
    {
       "id":410,
       "name":"Shieldon",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/shieldon.jpg",
-      "stars":2
+      "stars":4
    },
    {
       "id":411,
       "name":"Bastiodon",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/bastiodon.jpg",
-      "stars":4
+      "stars":5
    },
    {
       "id":412,
       "name":"Burmy",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/burmy.jpg",
-      "stars":1
+      "stars":3
    },
    {
       "id":413,
       "name":"Wormadam",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/wormadam.jpg",
-      "stars":3
+      "stars":4
    },
    {
       "id":414,
       "name":"Mothim",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/mothim.jpg",
-      "stars":3
+      "stars":4
    },
    {
       "id":415,
@@ -2944,7 +2944,7 @@
       "name":"Cherrim",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/cherrim.jpg",
-      "stars":1
+      "stars":4
    },
    {
       "id":422,
@@ -2958,182 +2958,182 @@
       "name":"Gastrodon",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/gastrodon.jpg",
-      "stars":1
+      "stars":4
    },
    {
       "id":424,
       "name":"Ambipom",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/ambipom.jpg",
-      "stars":1
+      "stars":4
    },
    {
       "id":425,
       "name":"Drifloon",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/drifloon.jpg",
-      "stars":1
+      "stars":2
    },
    {
       "id":426,
       "name":"Drifblim",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/drifblim.jpg",
-      "stars":1
+      "stars":4
    },
    {
       "id":427,
       "name":"Buneary",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/buneary.jpg",
-      "stars":1
+      "stars":2
    },
    {
       "id":428,
       "name":"Lopunny",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/lopunny.jpg",
-      "stars":1
+      "stars":4
    },
    {
       "id":429,
       "name":"Mismagius",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/mismagius.jpg",
-      "stars":1
+      "stars":4
    },
    {
       "id":430,
       "name":"Honchkrow",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/honchkrow.jpg",
-      "stars":1
+      "stars":6
    },
    {
       "id":431,
       "name":"Glameow",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/glameow.jpg",
-      "stars":1
+      "stars":3
    },
    {
       "id":432,
       "name":"Purugly",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/purugly.jpg",
-      "stars":1
+      "stars":5
    },
    {
       "id":433,
       "name":"Chingling",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/chingling.jpg",
-      "stars":1
+      "stars":2
    },
    {
       "id":434,
       "name":"Stunky",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/stunky.jpg",
-      "stars":1
+      "stars":2
    },
    {
       "id":435,
       "name":"Skuntank",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/skuntank.jpg",
-      "stars":1
+      "stars":6
    },
    {
       "id":436,
       "name":"Bronzor",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/bronzor.jpg",
-      "stars":1
+      "stars":2
    },
    {
       "id":437,
       "name":"Bronzong",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/bronzong.jpg",
-      "stars":1
+      "stars":4
    },
    {
       "id":438,
       "name":"Bonsly",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/bonsly.jpg",
-      "stars":1
+      "stars":3
    },
    {
       "id":439,
       "name":"Mime Jr.",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/mime jr..jpg",
-      "stars":1
+      "stars":3
    },
    {
       "id":440,
       "name":"Happiny",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/happiny.jpg",
-      "stars":1
+      "stars":3
    },
    {
       "id":441,
       "name":"Chatot",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/chatot.jpg",
-      "stars":1
+      "stars":5
    },
    {
       "id":442,
       "name":"Spiritomb",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/spiritomb.jpg",
-      "stars":1
+      "stars":7
    },
    {
       "id":443,
       "name":"Gible",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/gible.jpg",
-      "stars":1
+      "stars":4
    },
    {
       "id":444,
       "name":"Gabite",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/gabite.jpg",
-      "stars":1
+      "stars":5
    },
    {
       "id":445,
       "name":"Garchomp",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/garchomp.jpg",
-      "stars":1
+      "stars":7
    },
    {
       "id":446,
       "name":"Munchlax",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/munchlax.jpg",
-      "stars":1
+      "stars":3
    },
    {
       "id":447,
       "name":"Riolu",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/riolu.jpg",
-      "stars":1
+      "stars":3
    },
    {
       "id":448,
       "name":"Lucario",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/lucario.jpg",
-      "stars":1
+      "stars":6
    },
    {
       "id":449,
@@ -3147,42 +3147,42 @@
       "name":"Hippowdon",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/hippowdon.jpg",
-      "stars":1
+      "stars":4
    },
    {
       "id":451,
       "name":"Skorupi",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/skorupi.jpg",
-      "stars":1
+      "stars":3
    },
    {
       "id":452,
       "name":"Drapion",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/drapion.jpg",
-      "stars":1
+      "stars":6
    },
    {
       "id":453,
       "name":"Croagunk",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/croagunk.jpg",
-      "stars":1
+      "stars":2
    },
    {
       "id":454,
       "name":"Toxicroak",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/toxicroak.jpg",
-      "stars":1
+      "stars":5
    },
    {
       "id":455,
       "name":"Carnivine",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/carnivine.jpg",
-      "stars":1
+      "stars":4
    },
    {
       "id":456,
@@ -3196,14 +3196,14 @@
       "name":"Lumineon",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/lumineon.jpg",
-      "stars":1
+      "stars":4
    },
    {
       "id":458,
       "name":"Mantyke",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/mantyke.jpg",
-      "stars":1
+      "stars":2
    },
    {
       "id":459,
@@ -3217,98 +3217,98 @@
       "name":"Abomasnow",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/abomasnow.jpg",
-      "stars":1
+      "stars":4
    },
    {
       "id":461,
       "name":"Weavile",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/weavile.jpg",
-      "stars":1
+      "stars":6
    },
    {
       "id":462,
       "name":"Magnezone",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/magnezone.jpg",
-      "stars":1
+      "stars":6
    },
    {
       "id":463,
       "name":"Lickilicky",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/lickilicky.jpg",
-      "stars":1
+      "stars":6
    },
    {
       "id":464,
       "name":"Rhyperior",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/rhyperior.jpg",
-      "stars":1
+      "stars":6
    },
    {
       "id":465,
       "name":"Tangrowth",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/tangrowth.jpg",
-      "stars":1
+      "stars":6
    },
    {
       "id":466,
       "name":"Electivire",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/electivire.jpg",
-      "stars":1
+      "stars":6
    },
    {
       "id":467,
       "name":"Magmortar",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/magmortar.jpg",
-      "stars":1
+      "stars":6
    },
    {
       "id":468,
       "name":"Togekiss",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/togekiss.jpg",
-      "stars":1
+      "stars":7
    },
    {
       "id":469,
       "name":"Yanmega",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/yanmega.jpg",
-      "stars":1
+      "stars":6
    },
    {
       "id":470,
       "name":"Leafeon",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/leafeon.jpg",
-      "stars":1
+      "stars":6
    },
    {
       "id":471,
       "name":"Glaceon",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/glaceon.jpg",
-      "stars":1
+      "stars":6
    },
    {
       "id":472,
       "name":"Gliscor",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/gliscor.jpg",
-      "stars":1
+      "stars":6
    },
    {
       "id":473,
       "name":"Mamoswine",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/mamoswine.jpg",
-      "stars":1
+      "stars":6
    },
    {
       "id":474,
@@ -3322,21 +3322,21 @@
       "name":"Gallade",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/gallade.jpg",
-      "stars":1
+      "stars":6
    },
    {
       "id":476,
       "name":"Probopass",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/probopass.jpg",
-      "stars":1
+      "stars":5
    },
    {
       "id":477,
       "name":"Dusknoir",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/dusknoir.jpg",
-      "stars":1
+      "stars":6
    },
    {
       "id":478,
@@ -3350,104 +3350,104 @@
       "name":"Rotom",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/rotom.jpg",
-      "stars":1
+      "stars":7
    },
    {
       "id":480,
       "name":"Uxie",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/uxie.jpg",
-      "stars":1
+      "stars":9
    },
    {
       "id":481,
       "name":"Mesprit",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/mesprit.jpg",
-      "stars":1
+      "stars":9
    },
    {
       "id":482,
       "name":"Azelf",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/azelf.jpg",
-      "stars":1
+      "stars":9
    },
    {
       "id":483,
       "name":"Dialga",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/dialga.jpg",
-      "stars":1
+      "stars":10
    },
    {
       "id":484,
       "name":"Palkia",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/palkia.jpg",
-      "stars":1
+      "stars":10
    },
    {
       "id":485,
       "name":"Heatran",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/heatran.jpg",
-      "stars":1
+      "stars":10
    },
    {
       "id":486,
       "name":"Regigigas",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/regigigas.jpg",
-      "stars":1
+      "stars":10
    },
    {
       "id":487,
       "name":"Giratina",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/giratina.jpg",
-      "stars":1
+      "stars":10
    },
    {
       "id":488,
       "name":"Cresselia",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/cresselia.jpg",
-      "stars":1
+      "stars":10
    },
    {
       "id":489,
       "name":"Phione",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/phione.jpg",
-      "stars":1
+      "stars":8
    },
    {
       "id":490,
       "name":"Manaphy",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/manaphy.jpg",
-      "stars":1
+      "stars":10
    },
    {
       "id":491,
       "name":"Darkrai",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/darkrai.jpg",
-      "stars":1
+      "stars":10
    },
    {
       "id":492,
       "name":"Shaymin",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/shaymin.jpg",
-      "stars":1
+      "stars":10
    },
    {
       "id":493,
       "name":"Arceus",
       "show":"Pokémon",
       "imageURL":"https://img.pokemondb.net/artwork/arceus.jpg",
-      "stars":1
+      "stars":10
    }
 ]

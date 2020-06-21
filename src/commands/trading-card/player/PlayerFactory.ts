@@ -4,8 +4,8 @@ import { InventorySaveData } from "../inventory/InventorySaveData";
 import { Slot } from "../inventory/Slot";
 
 export class PlayerFactory{
-    private static readonly STARTER_GOLD:number=300;
-    private static readonly STARTER_CLAIMS:number=3;
+    private static readonly STARTER_GOLD:number=350;
+    private static readonly STARTER_CLAIMS:number=7;
     private static readonly STARTER_TRADES:number=1;
 
     private static readonly STARTER_CARDS:Inventory=Inventory.fromSaveData(new InventorySaveData(Number.MAX_SAFE_INTEGER,new Array<Slot>()));
