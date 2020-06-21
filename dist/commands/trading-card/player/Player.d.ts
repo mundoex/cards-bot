@@ -34,5 +34,12 @@ export declare class Player {
     addRewards(): void;
     hasCard(card: Card): boolean;
     hasPack(pack: Pack): boolean;
+    hasClaims(): boolean;
+    addClaim(ammount?: number): void;
+    removeClaim(ammount?: number): void;
+    addTrade(ammount?: number): void;
+    removeTrade(ammount?: number): void;
+    addLuck(ammount?: number): void;
+    removeLuck(ammount?: number): void;
     save(): void;
 }

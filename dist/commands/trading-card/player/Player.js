@@ -106,6 +106,33 @@ class Player {
     hasPack(pack) {
         return this.cards.contains(pack.id);
     }
+    hasClaims() {
+        return this.claims > 0;
+    }
+    addClaim(ammount = 1) {
+        this.claims += ammount;
+        this.save();
+    }
+    removeClaim(ammount = 1) {
+        this.claims -= ammount;
+        this.save();
+    }
+    addTrade(ammount = 1) {
+        this.trades += ammount;
+        this.save();
+    }
+    removeTrade(ammount = 1) {
+        this.trades -= ammount;
+        this.save();
+    }
+    addLuck(ammount = 1) {
+        this.luckModifier += ammount;
+        this.save();
+    }
+    removeLuck(ammount = 1) {
+        this.luckModifier -= ammount;
+        this.save();
+    }
     save() {
         const playerPath = Paths_1.Paths.getPlayerFilePath(this.id);
         fs_1.writeFileSync(playerPath, JSON.stringify(this.toSaveData()));

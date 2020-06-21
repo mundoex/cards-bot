@@ -11,7 +11,7 @@ import { Player } from "../player/Player";
 import { Inventory } from "../inventory/Inventory";
 
 const  AsciiTable = require("ascii-table");
-
+const emojis:any={0: '0️⃣', 1: '1️⃣',2: '2️⃣', 3: '3️⃣', 4: '4️⃣', 5: '5️⃣',6: '6️⃣', 7: '7️⃣', 8: '8️⃣', 9: '9️⃣',10: '🔟'};
 export class EmbedsManager{
 private static readonly CARDS_PER_TABLE=30;
 public static readonly PAGINATION_TIMEOUT=60*1000;
@@ -72,7 +72,7 @@ private static playerPacksEmbedCache=new Map<string,Array<MessageEmbed>>();
         return new MessageEmbed().setTitle("Shop Commands")
         .addField("shop info","Shows shop stock")
         .addField("shop buy <pack name>","Buys a pack")
-        .addField("shop buyx <pack name> <ammount>","Buys X ammount of packs");
+        .addField("shop buyx <ammount> <pack name>","Buys X ammount of packs");
     }
 
     static getTraderHelpEmbed() : MessageEmbed{
@@ -213,12 +213,13 @@ private static playerPacksEmbedCache=new Map<string,Array<MessageEmbed>>();
         table.addRow("Trades left: ",player.trades);
         table.addRow("Dry Streak: ",player.dryStreak);
         table.addRow("Luck Modifier: ",player.luckModifier);
-        table.addRow("Wish: ",CardManager.getInstance().getItemById(player.cardWishId).name);
+        const card=CardManager.getInstance().getItemById(player.cardWishId);
+        card!==undefined ? table.addRow("Wish: ",card.name) : table.addRow("Wish: ","Nothing");
         return new MessageEmbed().setTitle(title+" Profile").setAuthor(title).setDescription("```"+table.toString()+"```");
     }
 
     static needersEmojiFilter(reaction:MessageReaction, user:User){
-        return ["👍"].includes(reaction.emoji.name) && user.bot===false;
+        return reaction.emoji.name==="👍" && user.bot===false;
     }
 
     static inventoryEmbed(inv:Inventory){

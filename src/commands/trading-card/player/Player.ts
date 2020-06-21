@@ -140,6 +140,42 @@ export class Player{
         return this.cards.contains(pack.id);
     }
 
+    hasClaims() : boolean{
+        return this.claims>0;
+    }
+
+    addClaim(ammount:number=1){
+        this.claims+=ammount;
+        this.save();
+    }
+
+    removeClaim(ammount:number=1){
+        this.claims-=ammount;
+        this.save();
+    }
+
+    addTrade(ammount:number=1){
+        this.trades+=ammount;
+        this.save();
+    }
+
+    removeTrade(ammount:number=1){
+        this.trades-=ammount;
+        this.save();
+    }
+
+    addLuck(ammount:number=1){
+        this.luckModifier+=ammount;
+        this.save();
+    }
+
+    removeLuck(ammount:number=1){
+        this.luckModifier-=ammount;
+        this.save();
+    }
+
+    
+
     save() : void{
         const playerPath=Paths.getPlayerFilePath(this.id);
         writeFileSync(playerPath,JSON.stringify(this.toSaveData()));

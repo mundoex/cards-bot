@@ -21,10 +21,14 @@ class TimedEventsManager {
         setInterval(this.trader.forceRestock, TimedEventsManager.TRADER_RATE);
     }
     rewardAllCachedPlayers() {
-        this.playersHandler.cachedPlayersMap.forEach((player, playerId) => player.addRewards());
+        console.log(this.shop);
+        this.playersHandler.cachedPlayersMap.forEach((player, playerId) => {
+            player.addRewards();
+            console.log("Rewards Added");
+        });
     }
 }
 exports.TimedEventsManager = TimedEventsManager;
-TimedEventsManager.PLAYER_RATE = 60 * 60 * 1000;
+TimedEventsManager.PLAYER_RATE = 10000; //60*60*1000;
 TimedEventsManager.SHOP_RATE = 2 * 60 * 60 * 1000;
 TimedEventsManager.TRADER_RATE = 24 * 60 * 60 * 1000;

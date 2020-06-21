@@ -22,7 +22,7 @@ export class CardClient{
 
     //game help
     static gameHelp(msg:Message, client:Client, params:any){
-        msg.channel.send(EmbedsManager.getHelpEmbed());
+        msg.channel.send(EmbedsManager.getGameHelpEmbed());
     }
 
     //card help
@@ -121,50 +121,107 @@ export class CardClient{
         }
     }
 
+    //give :player claims :claims
+    static givePlayerClaims(msg:Message, client:Client, params:any){
+        const user=msg.mentions.users.first();
+        if(user){
+            let player=PlayerHandler.getInstance().getPlayerById(user.id);
+            const claims=parseInt(params.claims);
+            if(player!==undefined){
+                player.addClaim(claims);
+                msg.channel.send(`Admin has given ${user.username} ${claims} claims.`);
+            }else{
+                msg.channel.send("Error finding player");
+            }
+        }else{
+            msg.channel.send("Error finding mention");
+        }
+    }
+
+    //give :player trades :trades
+    static givePlayerTrades(msg:Message, client:Client, params:any){
+        const user=msg.mentions.users.first();
+        if(user){
+            let player=PlayerHandler.getInstance().getPlayerById(user.id);
+            const trades=parseInt(params.trades);
+            if(player!==undefined){
+                player.addTrade(trades);
+                msg.channel.send(`Admin has given ${user.username} ${trades} trades.`);
+            }else{
+                msg.channel.send("Error finding player");
+            }
+        }else{
+            msg.channel.send("Error finding mention");
+        }
+    }
+
+    //give :player luck :luckModifier
+    static givePlayerLuck(msg:Message, client:Client, params:any){
+        const user=msg.mentions.users.first();
+        if(user){
+            let player=PlayerHandler.getInstance().getPlayerById(user.id);
+            const luck=parseInt(params.luckModifier);
+            if(player!==undefined){
+                player.addLuck(luck);
+                msg.channel.send(`Admin has given ${user.username} ${luck} luck.`);
+            }else{
+                msg.channel.send("Error finding player");
+            }
+        }else{
+            msg.channel.send("Error finding mention");
+        }
+    }
+
 //###################### SHOP COMMANDS ######################    
     //shop info
     static shopInfo(msg:Message, client:Client, params:any){
         msg.channel.send(EmbedsManager.shopInfoEmbedMessage(server.shop));
     }
 
-    //shop buy :packName
+    //shop buy :packName*
     static shopBuy(msg:Message, client:Client, params:any){
+        const packName=params.packName.join(" ");
         let player=PlayerHandler.getInstance().getPlayerById(msg.author.id);
-        const pack:Pack=PackManager.getInstance().getItemByName(params.packName);
-        const hasPackInStore=server.shop.contains(pack.id);
-        if(player!==undefined && pack!==undefined && hasPackInStore){
-            const bought=player.buyPack(pack);
-            if(bought){
-                server.shop.sellItem(pack.id);
-                msg.channel.send(`Sold x1 ${pack.name} pack`);
-            }else{
-                msg.channel.send("You don't have enough money");
-            }
-        }else{
-            msg.channel.send("Player or pack not found");
-        }        
-    }
-
-    //shop buyx :packName :ammount
-    static shopBuyX(msg:Message, client:Client, params:any){
-        let player=PlayerHandler.getInstance().getPlayerById(msg.author.id);
-        const pack:Pack=PackManager.getInstance().getItemByName(params.packName);
-        const hasPackInStore=server.shop.contains(pack.id);
-        const ammountSelected=parseInt(params.ammount);
-        const ammountInStore=server.shop.inventory.items.get(pack.id);
-        if(player!==undefined && pack!==undefined && hasPackInStore){
-            if(ammountSelected<=ammountInStore){
-                const bought=player.buyXPack(pack,ammountSelected);
+        const pack:Pack=PackManager.getInstance().getItemByName(packName);
+        if(player!==undefined && pack!==undefined){
+            const hasPackInStore=server.shop.contains(pack.id);
+            if(hasPackInStore){
+                const bought=player.buyPack(pack);
                 if(bought){
                     server.shop.sellItem(pack.id);
-                    msg.channel.send(`Sold x${ammountSelected} ${pack.name} packs`);
+                    msg.channel.send(`Sold x1 ${pack.name} pack`);
                 }else{
                     msg.channel.send("You don't have enough money");
                 }
-            }
-        }else{
-            msg.channel.send("Player or pack not found");
-        }        
+            }else{
+                msg.channel.send("Player or pack not found");
+            }     
+        }      
+    }
+
+    //shop buyx :ammount :packName*
+    static shopBuyX(msg:Message, client:Client, params:any){
+        const packName=params.packName.join(" ");
+        const ammountSelected=parseInt(params.ammount);
+        let player=PlayerHandler.getInstance().getPlayerById(msg.author.id);
+        const pack:Pack=PackManager.getInstance().getItemByName(packName);
+        if(player!==undefined && pack!==undefined){
+            const hasPackInStore=server.shop.contains(pack.id);
+            const ammountInStore=server.shop.inventory.items.get(pack.id);
+            if(hasPackInStore){
+                if(ammountSelected<=ammountInStore){
+                    const bought=player.buyXPack(pack,ammountSelected);
+                    if(bought){
+                        server.shop.sellItem(pack.id,ammountSelected);
+                        msg.channel.send(`Sold x${ammountSelected} ${pack.name} packs`);
+                    }else{
+                        msg.channel.send("You don't have enough money");
+                    }
+                }
+            }else{
+                msg.channel.send("Player or pack not found");
+            }      
+        }  
     }
 //###################### TRADER COMMANDS ######################  
     //trader info
@@ -321,47 +378,52 @@ export class CardClient{
         }
     }
 
-    //pack open :packName
+    //open pack :packName
     static packOpen(msg:Message, client:Client, params:any){
-        client.on("messageReactionAdd",(msgr:MessageReaction,user:User)=>{
-            if(msgr.message.id==="2"){
-                //create collectors with events
-            }
-        });
+        const packName:string=params.packName.join(" ");
         let player=PlayerHandler.getInstance().getPlayerById(msg.member.id);
-        const pack=PackManager.getInstance().getItemById(parseInt(params.packName));
-        const cards:Array<Card>=player.openPack(pack);
-        if(cards){
-            cards.forEach((card:Card)=>CardClient.claimableCardPost(msg,player,card));
+        const pack=PackManager.getInstance().getItemByName(packName);
+        if(player!==undefined && pack!==undefined){
+            const cards:Array<Card>=player.openPack(pack);
+            if(cards){
+                cards.forEach((card:Card)=>CardClient.claimableCardPost(msg,player,card));
+            }else{
+                msg.channel.send("You don't have that pack.");
+            }
         }else{
-            msg.channel.send("You don't have that pack");
+            msg.channel.send("No such pack");
         }
     }
 
-    static claimableCardPost(msg:Message,player:Player,card:Card){
-        const embed:MessageEmbed=EmbedsManager.cardEmbedMessage(CardManager.getInstance().getItemById(3));
+    static claimableCardPost(msg:Message,packOwnerPlayer:Player,card:Card){
+        const embed:MessageEmbed=EmbedsManager.cardEmbedMessage(card);
         msg.channel.send(embed).then((sentMsg:Message)=>{
             sentMsg.react("👍");
-            sentMsg.awaitReactions(EmbedsManager.needersEmojiFilter,{max:5, time:15000}).then((collected:Collection<string,MessageReaction>)=>{
-                const usersIds:Array<string>=collected.first().users.cache.array().filter((user:User)=>{return user.bot===false;}).map((user:User)=>{return user.id});
-                const validNeeders:Array<Player>=LootingSystem.validNeeders(usersIds);
-                //lock aos claims e devolver aseguir aos losers
-                //const winner:Player=LootingSystem.splitLoot(player,validNeeders,card);
-               // msg.channel.send(msg.guild.members.cache.get(winner.id).user.username+" has received: " + card.name);
+            const collector=sentMsg.createReactionCollector(EmbedsManager.needersEmojiFilter,{max:5,time:13000});
+            const usersSet=new Set<string>();
+            const neederPlayers=new Array<Player>();
+            const neederFilter=(user:User)=>{return user.bot===false && usersSet.has(user.id)===false};
+            collector.on("collect",(msgr:MessageReaction)=>{
+                const user:User=msgr.users.cache.array().filter(neederFilter)[0];
+                if(user){
+                    usersSet.add(user.id);
+                    let neederPlayer=PlayerHandler.getInstance().getPlayerById(user.id);
+                    if(neederPlayer.hasClaims()){
+                        neederPlayer.removeClaim();
+                        neederPlayers.push(neederPlayer);
+                    }
+                }
+            });
+
+            collector.on("end",(msgr:MessageReaction)=>{
+                const lootResult=LootingSystem.splitLoot(packOwnerPlayer,neederPlayers,card);
+                if(lootResult.winner){
+                    const winnerName:string=msg.guild.members.cache.get(lootResult.winner.id).user.username;
+                    sentMsg.channel.send(`${winnerName} has won ${card.name}.`);
+                }else{
+                    sentMsg.channel.send(`${card.name} got away unclaimed.`)
+                }
             });
         });
     }
-
-
-    
-    //shop info const emojis:any={0: '0️⃣', 1: '1️⃣',2: '2️⃣', 3: '3️⃣', 4: '4️⃣', 5: '5️⃣',6: '6️⃣', 7: '7️⃣', 8: '8️⃣', 9: '9️⃣',10: '🔟'};
-    
-
-    
-
-    
-
-
-
-    
 }

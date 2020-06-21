@@ -8,7 +8,7 @@
     "start": "npm run build && node dist/index.js",
     "build": "tsc",
     "test": "npm run build && jasmine --reporter=jasmine-console-reporter --config=jasmine.json",
-    "console-test":"npm run build && node dist/test.js"
+    "console-test": "npm run build && node dist/test.js"
   },
   "author": "",
   "repository": {

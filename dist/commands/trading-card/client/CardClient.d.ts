@@ -15,6 +15,9 @@ export declare class CardClient {
     static givePlayerGold(msg: Message, client: Client, params: any): void;
     static givePlayerPack(msg: Message, client: Client, params: any): void;
     static givePlayerCard(msg: Message, client: Client, params: any): void;
+    static givePlayerClaims(msg: Message, client: Client, params: any): void;
+    static givePlayerTrades(msg: Message, client: Client, params: any): void;
+    static givePlayerLuck(msg: Message, client: Client, params: any): void;
     static shopInfo(msg: Message, client: Client, params: any): void;
     static shopBuy(msg: Message, client: Client, params: any): void;
     static shopBuyX(msg: Message, client: Client, params: any): void;
@@ -36,5 +39,5 @@ export declare class CardClient {
     static leaderboardStars(msg: Message, client: Client, params: any): void;
     static wish(msg: Message, client: Client, params: any): void;
     static packOpen(msg: Message, client: Client, params: any): void;
-    static claimableCardPost(msg: Message, player: Player, card: Card): void;
+    static claimableCardPost(msg: Message, packOwnerPlayer: Player, card: Card): void;
 }

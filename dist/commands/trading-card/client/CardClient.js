@@ -5,6 +5,7 @@ const PackManager_1 = require("../packs/PackManager");
 const EmbedsManager_1 = require("./EmbedsManager");
 const CardMain_1 = require("../CardMain");
 const PlayerHandler_1 = require("../player/PlayerHandler");
+const LootingSystem_1 = require("../LootingSystem");
 const Mathf_1 = require("../utils/Mathf");
 const paginationEmbed = require('discord.js-pagination');
 class CardClient {
@@ -15,7 +16,7 @@ class CardClient {
     }
     //game help
     static gameHelp(msg, client, params) {
-        msg.channel.send(EmbedsManager_1.EmbedsManager.getHelpEmbed());
+        msg.channel.send(EmbedsManager_1.EmbedsManager.getGameHelpEmbed());
     }
     //card help
     static cardHelp(msg, client, params) {
@@ -108,51 +109,111 @@ class CardClient {
             msg.channel.send("Error finding mention");
         }
     }
+    //give :player claims :claims
+    static givePlayerClaims(msg, client, params) {
+        const user = msg.mentions.users.first();
+        if (user) {
+            let player = PlayerHandler_1.PlayerHandler.getInstance().getPlayerById(user.id);
+            const claims = parseInt(params.claims);
+            if (player !== undefined) {
+                player.addClaim(claims);
+                msg.channel.send(`Admin has given ${user.username} ${claims} claims.`);
+            }
+            else {
+                msg.channel.send("Error finding player");
+            }
+        }
+        else {
+            msg.channel.send("Error finding mention");
+        }
+    }
+    //give :player trades :trades
+    static givePlayerTrades(msg, client, params) {
+        const user = msg.mentions.users.first();
+        if (user) {
+            let player = PlayerHandler_1.PlayerHandler.getInstance().getPlayerById(user.id);
+            const trades = parseInt(params.trades);
+            if (player !== undefined) {
+                player.addTrade(trades);
+                msg.channel.send(`Admin has given ${user.username} ${trades} trades.`);
+            }
+            else {
+                msg.channel.send("Error finding player");
+            }
+        }
+        else {
+            msg.channel.send("Error finding mention");
+        }
+    }
+    //give :player luck :luckModifier
+    static givePlayerLuck(msg, client, params) {
+        const user = msg.mentions.users.first();
+        if (user) {
+            let player = PlayerHandler_1.PlayerHandler.getInstance().getPlayerById(user.id);
+            const luck = parseInt(params.luckModifier);
+            if (player !== undefined) {
+                player.addLuck(luck);
+                msg.channel.send(`Admin has given ${user.username} ${luck} luck.`);
+            }
+            else {
+                msg.channel.send("Error finding player");
+            }
+        }
+        else {
+            msg.channel.send("Error finding mention");
+        }
+    }
     //###################### SHOP COMMANDS ######################    
     //shop info
     static shopInfo(msg, client, params) {
         msg.channel.send(EmbedsManager_1.EmbedsManager.shopInfoEmbedMessage(CardMain_1.server.shop));
     }
-    //shop buy :packName
+    //shop buy :packName*
     static shopBuy(msg, client, params) {
+        const packName = params.packName.join(" ");
         let player = PlayerHandler_1.PlayerHandler.getInstance().getPlayerById(msg.author.id);
-        const pack = PackManager_1.PackManager.getInstance().getItemByName(params.packName);
-        const hasPackInStore = CardMain_1.server.shop.contains(pack.id);
-        if (player !== undefined && pack !== undefined && hasPackInStore) {
-            const bought = player.buyPack(pack);
-            if (bought) {
-                CardMain_1.server.shop.sellItem(pack.id);
-                msg.channel.send(`Sold x1 ${pack.name} pack`);
-            }
-            else {
-                msg.channel.send("You don't have enough money");
-            }
-        }
-        else {
-            msg.channel.send("Player or pack not found");
-        }
-    }
-    //shop buyx :packName :ammount
-    static shopBuyX(msg, client, params) {
-        let player = PlayerHandler_1.PlayerHandler.getInstance().getPlayerById(msg.author.id);
-        const pack = PackManager_1.PackManager.getInstance().getItemByName(params.packName);
-        const hasPackInStore = CardMain_1.server.shop.contains(pack.id);
-        const ammountSelected = parseInt(params.ammount);
-        const ammountInStore = CardMain_1.server.shop.inventory.items.get(pack.id);
-        if (player !== undefined && pack !== undefined && hasPackInStore) {
-            if (ammountSelected <= ammountInStore) {
-                const bought = player.buyXPack(pack, ammountSelected);
+        const pack = PackManager_1.PackManager.getInstance().getItemByName(packName);
+        if (player !== undefined && pack !== undefined) {
+            const hasPackInStore = CardMain_1.server.shop.contains(pack.id);
+            if (hasPackInStore) {
+                const bought = player.buyPack(pack);
                 if (bought) {
                     CardMain_1.server.shop.sellItem(pack.id);
-                    msg.channel.send(`Sold x${ammountSelected} ${pack.name} packs`);
+                    msg.channel.send(`Sold x1 ${pack.name} pack`);
                 }
                 else {
                     msg.channel.send("You don't have enough money");
                 }
             }
+            else {
+                msg.channel.send("Player or pack not found");
+            }
         }
-        else {
-            msg.channel.send("Player or pack not found");
+    }
+    //shop buyx :ammount :packName*
+    static shopBuyX(msg, client, params) {
+        const packName = params.packName.join(" ");
+        const ammountSelected = parseInt(params.ammount);
+        let player = PlayerHandler_1.PlayerHandler.getInstance().getPlayerById(msg.author.id);
+        const pack = PackManager_1.PackManager.getInstance().getItemByName(packName);
+        if (player !== undefined && pack !== undefined) {
+            const hasPackInStore = CardMain_1.server.shop.contains(pack.id);
+            const ammountInStore = CardMain_1.server.shop.inventory.items.get(pack.id);
+            if (hasPackInStore) {
+                if (ammountSelected <= ammountInStore) {
+                    const bought = player.buyXPack(pack, ammountSelected);
+                    if (bought) {
+                        CardMain_1.server.shop.sellItem(pack.id, ammountSelected);
+                        msg.channel.send(`Sold x${ammountSelected} ${pack.name} packs`);
+                    }
+                    else {
+                        msg.channel.send("You don't have enough money");
+                    }
+                }
+            }
+            else {
+                msg.channel.send("Player or pack not found");
+            }
         }
     }
     //###################### TRADER COMMANDS ######################  
@@ -307,28 +368,52 @@ class CardClient {
             msg.channel.send("Error setting wish");
         }
     }
-    //pack open :packName
+    //open pack :packName
     static packOpen(msg, client, params) {
+        const packName = params.packName.join(" ");
         let player = PlayerHandler_1.PlayerHandler.getInstance().getPlayerById(msg.member.id);
-        const pack = PackManager_1.PackManager.getInstance().getItemById(parseInt(params.packName));
-        const cards = player.openPack(pack);
-        if (cards) {
-            cards.forEach((card) => CardClient.claimableCardPost(msg, player, card));
+        const pack = PackManager_1.PackManager.getInstance().getItemByName(packName);
+        if (player !== undefined && pack !== undefined) {
+            const cards = player.openPack(pack);
+            if (cards) {
+                cards.forEach((card) => CardClient.claimableCardPost(msg, player, card));
+            }
+            else {
+                msg.channel.send("You don't have that pack.");
+            }
         }
         else {
-            msg.channel.send("You don't have that pack");
+            msg.channel.send("No such pack");
         }
     }
-    static claimableCardPost(msg, player, card) {
-        const embed = EmbedsManager_1.EmbedsManager.cardEmbedMessage(CardManager_1.CardManager.getInstance().getItemById(3));
+    static claimableCardPost(msg, packOwnerPlayer, card) {
+        const embed = EmbedsManager_1.EmbedsManager.cardEmbedMessage(card);
         msg.channel.send(embed).then((sentMsg) => {
             sentMsg.react("👍");
-            sentMsg.awaitReactions(EmbedsManager_1.EmbedsManager.needersEmojiFilter, { max: 5, time: 15000 }).then((collected) => {
-                const usersIds = collected.first().users.cache.array().filter((user) => { return user.bot === false; }).map((user) => { return user.id; });
-                console.log(usersIds);
-                //const validNeeders:Array<Player>=LootingSystem.validNeeders(usersIds);
-                //const winner:Player=LootingSystem.splitLoot(player,validNeeders,card);
-                // msg.channel.send(msg.guild.members.cache.get(winner.id).user.username+" has received: " + card.name);
+            const collector = sentMsg.createReactionCollector(EmbedsManager_1.EmbedsManager.needersEmojiFilter, { max: 5, time: 13000 });
+            const usersSet = new Set();
+            const neederPlayers = new Array();
+            const neederFilter = (user) => { return user.bot === false && usersSet.has(user.id) === false; };
+            collector.on("collect", (msgr) => {
+                const user = msgr.users.cache.array().filter(neederFilter)[0];
+                if (user) {
+                    usersSet.add(user.id);
+                    let neederPlayer = PlayerHandler_1.PlayerHandler.getInstance().getPlayerById(user.id);
+                    if (neederPlayer.hasClaims()) {
+                        neederPlayer.removeClaim();
+                        neederPlayers.push(neederPlayer);
+                    }
+                }
+            });
+            collector.on("end", (msgr) => {
+                const lootResult = LootingSystem_1.LootingSystem.splitLoot(packOwnerPlayer, neederPlayers, card);
+                if (lootResult.winner) {
+                    const winnerName = msg.guild.members.cache.get(lootResult.winner.id).user.username;
+                    sentMsg.channel.send(`${winnerName} has won ${card.name}.`);
+                }
+                else {
+                    sentMsg.channel.send(`${card.name} got away unclaimed.`);
+                }
             });
         });
     }
