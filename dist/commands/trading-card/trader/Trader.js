@@ -28,6 +28,7 @@ class Trader {
     forceRestock() {
         this.needIds = new Array();
         this.fillNeedIds();
+        console.log("Trader Restocked");
     }
     hasBounty(card) {
         for (let index = 0; index < this.needIds.length; index++) {

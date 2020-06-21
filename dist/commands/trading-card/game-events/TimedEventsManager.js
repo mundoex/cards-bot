@@ -12,23 +12,22 @@ class TimedEventsManager {
         this.startTraderUpdateJob();
     }
     startRewardPlayerJob() {
-        setInterval(this.rewardAllCachedPlayers, TimedEventsManager.PLAYER_RATE);
+        setInterval(TimedEventsManager.rewardAllCachedPlayers, TimedEventsManager.PLAYER_RATE, this.playersHandler);
     }
     startShopUpdateJob() {
-        setInterval(this.shop.forceRestock, TimedEventsManager.SHOP_RATE);
+        setInterval((shop) => { shop.forceRestock(); }, TimedEventsManager.SHOP_RATE, this.shop);
     }
     startTraderUpdateJob() {
-        setInterval(this.trader.forceRestock, TimedEventsManager.TRADER_RATE);
+        setInterval((trader) => { trader.forceRestock(); }, TimedEventsManager.TRADER_RATE, this.trader);
     }
-    rewardAllCachedPlayers() {
-        console.log(this.shop);
-        this.playersHandler.cachedPlayersMap.forEach((player, playerId) => {
+    static rewardAllCachedPlayers(playersHandler) {
+        playersHandler.cachedPlayersMap.forEach((player, playerId) => {
             player.addRewards();
-            console.log("Rewards Added");
         });
+        console.log("Rewards Added");
     }
 }
 exports.TimedEventsManager = TimedEventsManager;
-TimedEventsManager.PLAYER_RATE = 10000; //60*60*1000;
-TimedEventsManager.SHOP_RATE = 2 * 60 * 60 * 1000;
-TimedEventsManager.TRADER_RATE = 24 * 60 * 60 * 1000;
+TimedEventsManager.PLAYER_RATE = 5100; //60*60*1000;
+TimedEventsManager.SHOP_RATE = 5200; //2*60*60*1000;
+TimedEventsManager.TRADER_RATE = 5300; //24*60*60*1000;

@@ -59,6 +59,7 @@ export class Shop extends ItemGenerator<Pack>{
     forceRestock(){
         this.inventory.clear();
         this.fillShop();
+        console.log("Shop Restocked");
     }
 
     sellItem(itemId:number,ammount:number=1){

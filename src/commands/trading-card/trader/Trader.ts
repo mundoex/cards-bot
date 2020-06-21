@@ -37,6 +37,7 @@ export class Trader {
     forceRestock(){
         this.needIds=new Array<number>();
         this.fillNeedIds();
+        console.log("Trader Restocked");
     }
 
     hasBounty(card:Card) : boolean{

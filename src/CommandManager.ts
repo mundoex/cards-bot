@@ -7,8 +7,6 @@ import { Middlewares } from "./middlewares/Middlewares";
 CommandManager.setPrefix("!");
 CommandManager.use(BotMiddleware.NotABot);
 
-const defaultFunction=(msg:Message)=>msg.channel.send("Not implemented try again later");
-
 //###################### HELP COMMANDS ######################
 CommandManager.command("help",CardClient.help); //check
 CommandManager.command("game help",CardClient.gameHelp);    //check
@@ -55,4 +53,3 @@ CommandManager.command("leaderboard stars",CardClient.leaderboardStars);
 CommandManager.command("wish :cardName",CardClient.wish);
 CommandManager.command("open pack :packName*",CardClient.packOpen);
 CommandManager.command("trade :userName :cardName",(msg:Message)=>msg.channel.send("Not implemented"));
-CommandManager.command("test",CardClient.claimableCardPost);

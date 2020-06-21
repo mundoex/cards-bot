@@ -7,7 +7,6 @@ const CardClient_1 = require("./commands/trading-card/client/CardClient");
 const Middlewares_1 = require("./middlewares/Middlewares");
 discord_bot_express_2.CommandManager.setPrefix("!");
 discord_bot_express_2.CommandManager.use(discord_bot_express_2.BotMiddleware.NotABot);
-const defaultFunction = (msg) => msg.channel.send("Not implemented try again later");
 //###################### HELP COMMANDS ######################
 discord_bot_express_2.CommandManager.command("help", CardClient_1.CardClient.help); //check
 discord_bot_express_2.CommandManager.command("game help", CardClient_1.CardClient.gameHelp); //check
@@ -54,4 +53,3 @@ discord_bot_express_2.CommandManager.command("leaderboard stars", CardClient_1.C
 discord_bot_express_2.CommandManager.command("wish :cardName", CardClient_1.CardClient.wish);
 discord_bot_express_2.CommandManager.command("open pack :packName*", CardClient_1.CardClient.packOpen);
 discord_bot_express_2.CommandManager.command("trade :userName :cardName", (msg) => msg.channel.send("Not implemented"));
-discord_bot_express_2.CommandManager.command("test", CardClient_1.CardClient.claimableCardPost);

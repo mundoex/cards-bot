@@ -13,5 +13,5 @@ export declare class TimedEventsManager {
     startRewardPlayerJob(): void;
     startShopUpdateJob(): void;
     startTraderUpdateJob(): void;
-    private rewardAllCachedPlayers;
+    private static rewardAllCachedPlayers;
 }

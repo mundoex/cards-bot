@@ -57,6 +57,7 @@ class Shop extends ItemGenerator_1.ItemGenerator {
     forceRestock() {
         this.inventory.clear();
         this.fillShop();
+        console.log("Shop Restocked");
     }
     sellItem(itemId, ammount = 1) {
         this.inventory.remove(itemId, ammount);

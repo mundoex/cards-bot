@@ -4,9 +4,9 @@ import { Trader } from "../trader/Trader";
 import { Player } from "../player/Player";
 
 export class TimedEventsManager{
-    private static readonly PLAYER_RATE=5000;//60*60*1000;
-    private static readonly SHOP_RATE=2*60*60*1000;
-    private static readonly TRADER_RATE=24*60*60*1000;
+    private static readonly PLAYER_RATE=5100;//60*60*1000;
+    private static readonly SHOP_RATE=5200;//2*60*60*1000;
+    private static readonly TRADER_RATE=5300;//24*60*60*1000;
     
     shop:Shop;
     trader:Trader;
@@ -25,22 +25,21 @@ export class TimedEventsManager{
     }
 
     startRewardPlayerJob(){
-        setInterval(this.rewardAllCachedPlayers,TimedEventsManager.PLAYER_RATE);
+        setInterval(TimedEventsManager.rewardAllCachedPlayers,TimedEventsManager.PLAYER_RATE,this.playersHandler);
     }
 
     startShopUpdateJob(){
-        setInterval(this.shop.forceRestock,TimedEventsManager.SHOP_RATE);
+        setInterval((shop:Shop)=>{shop.forceRestock();},TimedEventsManager.SHOP_RATE,this.shop);
     }
 
     startTraderUpdateJob(){
-        setInterval(this.trader.forceRestock,TimedEventsManager.TRADER_RATE);
+        setInterval((trader:Trader)=>{trader.forceRestock();},TimedEventsManager.TRADER_RATE,this.trader);
     }
 
-    private rewardAllCachedPlayers(){
-        console.log(this);
-        this.playersHandler.cachedPlayersMap.forEach((player:Player,playerId:string)=>{
+    private static rewardAllCachedPlayers(playersHandler:PlayerHandler){
+        playersHandler.cachedPlayersMap.forEach((player:Player,playerId:string)=>{
             player.addRewards();
-            console.log("Rewards Added");
         });
+        console.log("Rewards Added");
     }
 }
