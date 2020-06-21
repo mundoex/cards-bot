@@ -199,7 +199,7 @@ private static playerPacksEmbedCache=new Map<string,Array<MessageEmbed>>();
     }
 
     static shopInfoEmbedMessage(shop:Shop) : MessageEmbed{
-        let table=new AsciiTable().setHeading("Pack Name","Ammount","Rarity","Price");
+        let table=new AsciiTable().setHeading("Pack Name","Stock","Rarity","Price");
 
         for(const [key,value] of shop.inventory.items.entries()){
             const pack=PackManager.getInstance().getItemById(key);

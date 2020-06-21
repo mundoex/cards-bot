@@ -13,7 +13,6 @@ import { Mathf } from "../utils/Mathf";
 const paginationEmbed = require('discord.js-pagination');
 
 export class CardClient{
-    
 //###################### HELP COMMANDS ######################
     //help
     static help(msg:Message, client:Client, params:any){
@@ -299,6 +298,14 @@ export class CardClient{
             msg.channel.send("No result found.");
         }
     }
+    //pack list
+    static packList(msg:Message, client:Client, params:any) {
+        const embed=new MessageEmbed().setTitle("Available Packs")
+        .setThumbnail("https://media.discordapp.net/attachments/643766430801592330/724404894873813112/1e06c0d354669e2ef3666f129eeb6d7a6b0f6a45_hq.png?width=349&height=465");
+        PackManager.getInstance().packs.forEach((pack:Pack)=>embed.addField(pack.name,pack.rarity.toString));
+        msg.channel.send(embed);
+    }
+
 //###################### PROFILE COMMANDS ######################
     //my profile
     static myProfile(msg:Message, client:Client, params:any){

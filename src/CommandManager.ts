@@ -39,6 +39,7 @@ CommandManager.command("card info :cardValue*",CardClient.cardInfo);     //check
 CommandManager.command("card search :cardName",CardClient.cardSearch);      //check
 //###################### PACKS COMMANDS ######################
 CommandManager.command("pack info :packValue*",CardClient.packInfo);        //check
+CommandManager.command("pack list",CardClient.packList);        //check
 //###################### PROFILE COMMANDS ######################
 CommandManager.command("my profile",CardClient.myProfile);      //check
 CommandManager.command("my cards",CardClient.myCards);      //check
