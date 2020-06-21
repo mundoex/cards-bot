@@ -1,0 +1,38 @@
+import { Card } from "../cards/Card";
+import { Inventory } from "../inventory/Inventory";
+import { PlayerSaveData } from "./PlayerSaveData";
+import { Pack } from "../packs/Pack";
+export declare class Player {
+    private static readonly GOLD_RATE;
+    private static readonly CLAIM_RATE;
+    private static readonly TRADE_RATE;
+    id: string;
+    gold: number;
+    claims: number;
+    trades: number;
+    cards: Inventory;
+    packs: Inventory;
+    top10CardIds: Array<number>;
+    packsOpened: number;
+    dryStreak: number;
+    cardWishId: number;
+    luckModifier: number;
+    constructor(id: string, gold: number, claims: number, trades: number, cards: Inventory, packs: Inventory, top10CardIds: Array<number>, packsOpened: number, dryStreak: number, cardWishId: number, luckModifier: number);
+    static fromSaveData(playerSaveData: PlayerSaveData): Player;
+    toSaveData(): PlayerSaveData;
+    trade(): void;
+    wish(cardName: string): boolean;
+    buyPack(pack: Pack): boolean;
+    buyXPack(pack: Pack, ammount: number): boolean;
+    openPack(pack: Pack): Array<Card>;
+    addCard(card: Card): void;
+    removeCard(card: Card): void;
+    addPack(pack: Pack): void;
+    addGold(ammount: number): void;
+    removeGold(ammount: number): void;
+    removePack(pack: Pack): void;
+    addRewards(): void;
+    hasCard(card: Card): boolean;
+    hasPack(pack: Pack): boolean;
+    save(): void;
+}
