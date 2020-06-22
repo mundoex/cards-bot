@@ -25,6 +25,7 @@ CommandManager.command("give :player card :cardId",Middlewares.isDeveloper,CardC
 CommandManager.command("give :player claims :claims",Middlewares.isDeveloper,CardClient.givePlayerClaims);  //check
 CommandManager.command("give :player trades :trades",Middlewares.isDeveloper,CardClient.givePlayerTrades);  //check
 CommandManager.command("give :player luck :luckModifier",Middlewares.isDeveloper,CardClient.givePlayerLuck);    //check
+CommandManager.command("giveall gold :ammount",Middlewares.isDeveloper,CardClient.giveAllGold); //check
 //###################### SHOP COMMANDS ######################
 CommandManager.command("shop info",CardClient.shopInfo);    //check
 CommandManager.command("shop buy :packName*",CardClient.shopBuy);   //check
@@ -32,7 +33,7 @@ CommandManager.command("shop buyx :ammount :packName*",CardClient.shopBuyX);    
 //###################### TRADER COMMANDS ######################
 CommandManager.command("trader info",CardClient.traderInfo);    //check
 CommandManager.command("trader sell :cardName*",CardClient.traderSell);
-CommandManager.command("trader reroll :cardName1 :cardName2 :cardName3",CardClient.traderReroll);
+CommandManager.command("trader reroll :cards*",CardClient.traderReroll);
 CommandManager.command("trader guess :stars",CardClient.traderGuess);
 //###################### CARDS COMMANDS ######################
 CommandManager.command("card info :cardValue*",CardClient.cardInfo);     //check

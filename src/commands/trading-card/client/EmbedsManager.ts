@@ -33,7 +33,7 @@ private static playerPacksEmbedCache=new Map<string,Array<MessageEmbed>>();
 
     static getGameHelpEmbed() : MessageEmbed{
         return new MessageEmbed().setTitle("Game help")
-        .setDescription("NOT COMPLETE");
+        .setDescription("Buy pack and open it");
     }
 
     static getCardHelpEmbed() : MessageEmbed{
@@ -80,7 +80,7 @@ private static playerPacksEmbedCache=new Map<string,Array<MessageEmbed>>();
         return new MessageEmbed().setTitle("Trader Commands")
         .addField("trader info","Shows Trader bounty cards")
         .addField("trader sell <card name>","Sells card to trader")
-        .addField("trader reroll <card name1> <card name2> <card name3>","Rerolls 3 of your cards into a new card")
+        .addField("trader reroll <card name1>$<card name2>$<card name3>","Rerolls 3 of your cards into a new card")
         .addField("trader guess <stars>","Guess a random card star number for a price");
     }
 

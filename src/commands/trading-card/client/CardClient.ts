@@ -1,6 +1,5 @@
 import { Card } from "../cards/Card";
 import { MessageEmbed, Message, Client, Emoji, MessageReaction, User, Collection } from "discord.js";
-import { Rarity } from "../drop-generation/Rarity";
 import { CardManager } from "../cards/CardManager";
 import { PackManager } from "../packs/PackManager";
 import { Pack } from "../packs/Pack";
@@ -171,6 +170,15 @@ export class CardClient{
         }
     }
 
+    //giveall gold :ammount
+    static giveAllGold(msg:Message, client:Client, params:any){
+        const gold=parseInt(params.ammount);
+        PlayerHandler.getInstance().cachedPlayersMap.forEach((player:Player,key:string)=>{
+            player.addGold(gold);
+        });
+        msg.channel.send(`All regular players have received ${gold}gold`)
+    }
+
 //###################### SHOP COMMANDS ######################    
     //shop info
     static shopInfo(msg:Message, client:Client, params:any){
@@ -252,9 +260,10 @@ export class CardClient{
         }
     }
 
-    //trader reroll :cardName1 :cardName2 :cardName3 
+    //trader reroll :cards*
     static traderReroll(msg:Message, client:Client, params:any){
-        msg.channel.send("Nah no gambling yet");
+        const cardsNames=params.cards.slit("$").join(" ");
+        console.log(cardsNames);
     }
 
     //trader guess :stars
@@ -342,9 +351,13 @@ export class CardClient{
 
     //profile :mention
     static profile(msg:Message, client:Client, params:any){
-        let player=PlayerHandler.getInstance().getPlayerById(msg.mentions.users.first().id);
+        let user=msg.mentions.users.first();
+        if(user===undefined){
+            user=msg.author;
+        }
+        let player=PlayerHandler.getInstance().getPlayerById(user.id);
         if(player){
-            msg.channel.send(EmbedsManager.playerEmbedMessage(msg.member.displayName,player));
+            msg.channel.send(EmbedsManager.playerEmbedMessage(user.username,player));
         }else{
             msg.channel.send("Error finding player");
         }
@@ -352,7 +365,11 @@ export class CardClient{
 
     //profile cards :mention
     static profileCards(msg:Message,client:Client,params:any){
-        let player=PlayerHandler.getInstance().getPlayerById(msg.mentions.users.first().id);
+        let user=msg.mentions.users.first();
+        if(user===undefined){
+            user=msg.author;
+        }
+        let player=PlayerHandler.getInstance().getPlayerById(user.id);
         if(player){
             const embeds=EmbedsManager.getPlayerCardsEmbedPages(player);
             paginationEmbed(msg,embeds,['⏪', '⏩'],EmbedsManager.PAGINATION_TIMEOUT);
@@ -363,7 +380,11 @@ export class CardClient{
 
     //profile packs :mention
     static profilePacks(msg:Message, client:Client, params:any){
-        let player=PlayerHandler.getInstance().getPlayerById(msg.mentions.users.first().id);
+        let user=msg.mentions.users.first();
+        if(user===undefined){
+            user=msg.author;
+        }
+        let player=PlayerHandler.getInstance().getPlayerById(user.id);
         if(player){
                 const embeds=EmbedsManager.getPlayerPacksEmbedPages(player);
                 paginationEmbed(msg,embeds,['⏪', '⏩'],EmbedsManager.PAGINATION_TIMEOUT);
