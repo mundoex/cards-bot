@@ -7,6 +7,7 @@ import { CardManager } from "../cards/CardManager";
 import { Pack } from "../packs/Pack";
 import { PackManager } from "../packs/PackManager";
 import { Rarity } from "../drop-generation/Rarity";
+import { Trader } from "../trader/Trader";
 
 export class Player{
     private static readonly GOLD_RATE=125;
@@ -178,6 +179,20 @@ export class Player{
     removeLuck(ammount:number=1){
         this.luckModifier-=ammount;
         this.save();
+    }
+
+    reroll(card1:Card,card2:Card,card3:Card,trader:Trader) : Card{
+        const hasCards=this.cards.contains(card1.id) && this.cards.contains(card2.id) && this.cards.contains(card3.id);
+        if(hasCards){
+            this.removeCard(card1);
+            this.removeCard(card2);
+            this.removeCard(card3);
+            const cardResult:Card=trader.reRoll(card1,card2,card3);
+            this.addCard(cardResult);
+            return cardResult;
+        }else{
+            return undefined;
+        }
     }
 
     

@@ -34,7 +34,7 @@ export class DropGenerator{
     }
 
     generateRandomRarity() : number{
-        const random=Mathf.randomDecimal(0,100,3)/100;
+        const random=Mathf.randomDecimal(0,100,4)/100;
         if(this.isUltraDrop(random)){
             return Rarity.ULTRA;
         }else if(this.isLegendaryDrop(random)){

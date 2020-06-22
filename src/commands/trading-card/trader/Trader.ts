@@ -3,6 +3,8 @@ import { Mathf } from "../utils/Mathf";
 import { Rarity } from "../drop-generation/Rarity";
 import { GoldSystem } from "../GoldSystem";
 import { Card } from "../cards/Card";
+import { PackManager } from "../packs/PackManager";
+import { Pack } from "../packs/Pack";
 
 export class Trader {
     private static readonly NEED_CAPACITY=5;
@@ -26,10 +28,12 @@ export class Trader {
         return GoldSystem.starsToGold(stars)*Trader.MULTIPLIER;
     }
 
-    reRoll(cardId1:number,cardId2:number,cardId3:number){
-        const cards=CardManager.getInstance().getItemsByIds([cardId1,cardId2,cardId3]);
-        const avgRarity=Rarity.averageRarity(cards.map(card=>{return card.rarity.stars}));
-        return avgRarity;
+    reRoll(card1:Card,card2:Card,card3:Card) : Card{
+        const cards=[card1,card2,card3];
+        const avgRarity=Math.floor(Mathf.average(cards.map((card:Card)=>{return card.rarity.rarity;})));
+        const randomPackIndex=Mathf.randomInt(1,PackManager.getInstance().packs.size);
+        const randomPack:Pack=PackManager.getInstance().packs.get(randomPackIndex);
+        return randomPack.randomItemByRarity(Mathf.randomInt(avgRarity-1,avgRarity+1));
     }
 
     guessStar(){}
