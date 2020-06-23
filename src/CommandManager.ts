@@ -26,6 +26,7 @@ CommandManager.command("give :player claims :claims",Middlewares.isDeveloper,Car
 CommandManager.command("give :player trades :trades",Middlewares.isDeveloper,CardClient.givePlayerTrades);  //check
 CommandManager.command("give :player luck :luckModifier",Middlewares.isDeveloper,CardClient.givePlayerLuck);    //check
 CommandManager.command("giveall gold :ammount",Middlewares.isDeveloper,CardClient.giveAllGold); //check
+CommandManager.command("giveall rewards :times",Middlewares.isDeveloper,CardClient.giveAllRewards); //check
 //###################### SHOP COMMANDS ######################
 CommandManager.command("shop info",CardClient.shopInfo);    //check
 CommandManager.command("shop buy :packName*",CardClient.shopBuy);   //check

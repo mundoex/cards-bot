@@ -179,6 +179,17 @@ export class CardClient{
         msg.channel.send(`All regular players have received ${gold}gold`)
     }
 
+    //giveall rewards :times
+    static giveAllRewards(msg:Message,client:Client,params:any){
+        const times=parseInt(params.times);
+        PlayerHandler.getInstance().cachedPlayersMap.forEach((player:Player)=>{
+            for (let index = 0; index < times; index++) {
+                player.addRewards();
+            } 
+        });
+        msg.channel.send(`Rewards given`);
+    }
+
 //###################### SHOP COMMANDS ######################    
     //shop info
     static shopInfo(msg:Message, client:Client, params:any){
