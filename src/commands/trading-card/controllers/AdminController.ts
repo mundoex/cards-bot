@@ -149,7 +149,7 @@ export class AdminController{
 
     //spawn pack :packId
     static spawnPack(msg:Message,client:Client,params:any){
-        const pack=PackManager.getInstance().getItemById(params.packId);
+        const pack=PackManager.getInstance().getItemById(parseInt(params.packId));
         const cards=pack.open();
         for (let i = 0; i < cards.length; i++) {
             PlayerController.claimableCardPost(msg,undefined,cards[i]);
