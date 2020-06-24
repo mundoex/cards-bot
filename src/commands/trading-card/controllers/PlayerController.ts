@@ -6,11 +6,40 @@ import { Player } from "../player/Player";
 import { EmbedsManager } from "../client/EmbedsManager";
 import { LootingSystem } from "../systems/looting/LootingSystem";
 import { CardManager } from "../cards/CardManager";
-import { Mathf } from "../utils/Mathf";
 import { Stringf } from "../utils/Stringf";
 
 export class PlayerController{
     //###################### PLAYER COMMANDS ######################
+    //give :mention :cardName
+    static giftCard(msg:Message, client:Client, params:any){
+        const mention=msg.mentions.users.first();
+        if(mention===undefined){return msg.channel.send("Can't find that mention");}
+        const gifter=PlayerHandler.getInstance().getPlayerById(msg.author.id);
+        const receiver=PlayerHandler.getInstance().getPlayerById(msg.author.id);
+        if(gifter===undefined && receiver===undefined){return msg.channel.send("Can't find user");}
+        const card=CardManager.getInstance().getItemByName(Stringf.upperCaseFirstChars(params.cardName));
+        if(card===undefined){return msg.channel.send("Can't find card");}
+
+        msg.channel.send(`${mention.username} do you accept ${card.name} as a gift?`).then((sentMsg:Message)=>{
+            sentMsg.react("👍");
+            const collector=sentMsg.createReactionCollector(EmbedsManager.needersEmojiFilter,{time:13000});
+            
+            collector.on("collect",(msgr:MessageReaction)=>{
+                const accepted=msgr.users.cache.get(receiver.getId())!==undefined;
+                if(accepted){
+                    const giftWorked:boolean=gifter.giveCard(receiver,card);
+                    if(giftWorked){
+                        msg.channel.send(`${mention.username} was gifted ${card.name} by ${msg.author.username}.`);
+                        collector.stop();
+                    }else{
+                        msg.channel.send("Gift didn't work. Check if you have the card and trades");
+                        collector.stop();
+                    }
+                }
+            });
+        });
+    }
+
     //wish :cardName
     static wish(msg:Message, client:Client, params:any){
         let player=PlayerHandler.getInstance().getPlayerById(msg.author.id);

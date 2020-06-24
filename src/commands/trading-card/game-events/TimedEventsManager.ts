@@ -6,7 +6,7 @@ import { Player } from "../player/Player";
 export class TimedEventsManager{
     private static readonly PLAYER_RATE=60*60*1000;
     private static readonly SHOP_RATE=2*60*60*1000;
-    private static readonly TRADER_RATE=24*60*60*1000;
+    private static readonly TRADER_RATE=2*60*60*1000;
     
     shop:Shop;
     trader:Trader;

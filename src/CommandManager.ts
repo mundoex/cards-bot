@@ -62,3 +62,4 @@ CommandManager.command("profile packs :mention",ProfileController.profilePacks);
 CommandManager.command("wish :cardName",PlayerController.wish);   //check
 CommandManager.command("open pack :packName*",PlayerController.packOpen); //check
 CommandManager.command("trade :mention :cards*",PlayerController.trade);
+CommandManager.command("gift :mention :cardName",PlayerController.giftCard);

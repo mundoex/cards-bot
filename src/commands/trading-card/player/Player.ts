@@ -114,6 +114,17 @@ export class Player{
             return undefined;
         }
     }
+
+    giveCard(player:Player,card:Card){
+        if(this.hasTrades() && this.hasCard(card)){
+            this.removeCard(card);
+            this.removeTrade();
+            player.addCard(card);
+            return true;
+        }else{
+            return false;
+        }
+    }
     ////#endregion
 
     ////#region ############ GETTERS ############
@@ -166,7 +177,7 @@ export class Player{
     }
 
     getPacks() : Map<number,number>{
-        return this.cards.items;
+        return this.packs.items;
     }
 
     isEmptyCards() : boolean{
