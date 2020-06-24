@@ -12,13 +12,14 @@ import { Inventory } from "../inventory/Inventory";
 
 const  AsciiTable = require("ascii-table");
 const emojis:any={0: '0️⃣', 1: '1️⃣',2: '2️⃣', 3: '3️⃣', 4: '4️⃣', 5: '5️⃣',6: '6️⃣', 7: '7️⃣', 8: '8️⃣', 9: '9️⃣',10: '🔟'};
+
 export class EmbedsManager{
-private static readonly CARDS_PER_TABLE=30;
-public static readonly PAGINATION_TIMEOUT=60*1000;
-private static readonly CLEAN_CACHE_TIMEOUT=10*60*1000;
-private static packsEmbedCache=new Map<number,Array<MessageEmbed>>();
-private static playerCardsEmbedCache=new Map<string,Array<MessageEmbed>>();
-private static playerPacksEmbedCache=new Map<string,Array<MessageEmbed>>();
+    private static readonly CARDS_PER_TABLE=30;
+    public static readonly PAGINATION_TIMEOUT=60*1000;
+    private static readonly CLEAN_CACHE_TIMEOUT=10*60*1000;
+    private static packsEmbedCache=new Map<number,Array<MessageEmbed>>();
+    private static playerCardsEmbedCache=new Map<string,Array<MessageEmbed>>();
+    private static playerPacksEmbedCache=new Map<string,Array<MessageEmbed>>();
 
     static getHelpEmbed() : MessageEmbed{
         return new MessageEmbed().setTitle("Help Commands")
@@ -64,7 +65,7 @@ private static playerPacksEmbedCache=new Map<string,Array<MessageEmbed>>();
     static getPlayerHelpEmbed() : MessageEmbed{
         return new MessageEmbed().setTitle("Player Commands")
         .addField("wish <card name>","Sets your current wished card")
-        .addField("trade <card offer> <card request> <mention>","Sends trade request")
+        .addField("trade <mention> <card to give>$<card to receive> ","Sends trade request")
         .addField("open pack <pack name>","Opens a pack from your inventory with that name")
         .addField("top10 <position> <card name>","Sets card into your top 10");
     }
@@ -97,13 +98,13 @@ private static playerPacksEmbedCache=new Map<string,Array<MessageEmbed>>();
     }
 
     static getPlayerCardsEmbedPages(player:Player) : Array<MessageEmbed>{
-        this.playerCardsEmbedCache.set(player.id,EmbedsManager.generatePlayerCardsEmbedPages(player));
-        return this.playerCardsEmbedCache.get(player.id);
+        this.playerCardsEmbedCache.set(player.getId(),EmbedsManager.generatePlayerCardsEmbedPages(player));
+        return this.playerCardsEmbedCache.get(player.getId());
     }
 
     static getPlayerPacksEmbedPages(player:Player): Array<MessageEmbed>{
-        this.playerPacksEmbedCache.set(player.id,EmbedsManager.generatePlayerPacksEmbedPages(player));
-        return this.playerPacksEmbedCache.get(player.id);
+        this.playerPacksEmbedCache.set(player.getId(),EmbedsManager.generatePlayerPacksEmbedPages(player));
+        return this.playerPacksEmbedCache.get(player.getId());
     }
 
     static generatePlayerCardsEmbedPages(player:Player) : Array<MessageEmbed>{
@@ -111,11 +112,11 @@ private static playerPacksEmbedCache=new Map<string,Array<MessageEmbed>>();
         let table=new AsciiTable().setHeading("Name","Quantity","Rarity");
         let counter=0;
         //empty
-        if(player.cards.items.size<=0){
+        if(player.isEmptyCards()){
             embedsResult.push(new MessageEmbed().setTitle("Cards Collection").setDescription("Empty"));
             return embedsResult;
         }
-        for (const [key,value] of player.cards.items.entries()) {
+        for (const [key,value] of player.getCards().entries()) {
             const card:Card=CardManager.getInstance().getItemById(key);
             if(counter===EmbedsManager.CARDS_PER_TABLE){  
                 embedsResult.push(new MessageEmbed().setTitle("Cards Collection").setDescription("```"+table.toString()+"```"));
@@ -135,11 +136,11 @@ private static playerPacksEmbedCache=new Map<string,Array<MessageEmbed>>();
         let table=new AsciiTable().setHeading("Name","Quantity","Rarity");
         let counter=0;
         //empty
-        if(player.packs.items.size<=0){
+        if(player.isEmptyPacks()){
             embedsResult.push(new MessageEmbed().setTitle("Packs Collection").setDescription("Empty"));
             return embedsResult;
         }
-        for (const [key,value] of player.packs.items.entries()) {
+        for (const [key,value] of player.getPacks().entries()) {
             const pack:Pack=PackManager.getInstance().getItemById(key);
             if(counter===EmbedsManager.CARDS_PER_TABLE){  
                 embedsResult.push(new MessageEmbed().setTitle("Packs Collection").setDescription("```"+table.toString()+"```"));
@@ -219,12 +220,12 @@ private static playerPacksEmbedCache=new Map<string,Array<MessageEmbed>>();
 
     static playerEmbedMessage(title:string,player:Player): MessageEmbed{
         let table=new AsciiTable();
-        table.addRow("Gold: ",player.gold);
-        table.addRow("Claims left: ",player.claims);
-        table.addRow("Trades left: ",player.trades);
-        table.addRow("Dry Streak: ",player.dryStreak);
-        table.addRow("Luck Modifier: ",player.luckModifier);
-        const card=CardManager.getInstance().getItemById(player.cardWishId);
+        table.addRow("Gold: ",player.getGold());
+        table.addRow("Claims left: ",player.getClaims());
+        table.addRow("Trades left: ",player.getTrades());
+        table.addRow("Dry Streak: ",player.getDryStreak());
+        table.addRow("Luck Modifier: ",player.getLuckModifier());
+        const card=CardManager.getInstance().getItemById(player.getWish());
         card!==undefined ? table.addRow("Wish: ",card.name) : table.addRow("Wish: ","Nothing");
         return new MessageEmbed().setTitle(title+" Profile").setAuthor(title).setDescription("```"+table.toString()+"```");
     }

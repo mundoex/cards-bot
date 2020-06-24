@@ -1,13 +1,5 @@
-import { Player } from "../player/Player";
 import { PlayerHandler } from "../player/PlayerHandler";
-import { Message, Client, MessageEmbed, MessageReaction, Collection, User } from "discord.js";
-import { Pack } from "../packs/Pack";
-import { Card } from "../cards/Card";
-import { CardManager } from "../cards/CardManager";
-import { LootingSystem } from "../LootingSystem";
-import { PackManager } from "../packs/PackManager";
 import { Shop } from "../shop/Shop";
-import { Rarity } from "../drop-generation/Rarity";
 import { Trader } from "../trader/Trader";
 import { TimedEventsManager } from "../game-events/TimedEventsManager";
 

@@ -1,58 +1,62 @@
 export {CommandManager} from "discord-bot-express";
 import {CommandManager, BotMiddleware} from "discord-bot-express";
-import { CardClient } from "./commands/trading-card/client/CardClient";
 import { Message } from "discord.js";
 import { Middlewares } from "./middlewares/Middlewares";
+import { HelpController } from "./commands/trading-card/controllers/HelpController";
+import { AdminController } from "./commands/trading-card/controllers/AdminController";
+import { ShopController } from "./commands/trading-card/controllers/ShopController";
+import { TraderController } from "./commands/trading-card/controllers/TraderController";
+import { CardController } from "./commands/trading-card/controllers/CardController";
+import { PackController } from "./commands/trading-card/controllers/PackController";
+import { ProfileController } from "./commands/trading-card/controllers/ProfileController";
+import { PlayerController } from "./commands/trading-card/controllers/PlayerController";
 
 CommandManager.setPrefix("!");
 CommandManager.use(BotMiddleware.NotABot);
 
 //###################### HELP COMMANDS ######################
-CommandManager.command("help",CardClient.help); //check
-CommandManager.command("game help",CardClient.gameHelp);    //check
-CommandManager.command("card help",CardClient.cardHelp);    //check
-CommandManager.command("pack help",CardClient.packHelp);    //check
-CommandManager.command("profile help",CardClient.profileHelp);  //check
-CommandManager.command("player help",CardClient.playerHelp);    //check
-CommandManager.command("shop help",CardClient.shopHelp);    //check
-CommandManager.command("trader help",CardClient.traderHelp);    //check
+CommandManager.command("help",HelpController.help); //check
+CommandManager.command("game help",HelpController.gameHelp);    //check
+CommandManager.command("card help",HelpController.cardHelp);    //check
+CommandManager.command("pack help",HelpController.packHelp);    //check
+CommandManager.command("profile help",HelpController.profileHelp);  //check
+CommandManager.command("player help",HelpController.playerHelp);    //check
+CommandManager.command("shop help",HelpController.shopHelp);    //check
+CommandManager.command("trader help",HelpController.traderHelp);    //check
 //###################### ADMIN COMMANDS ######################
-CommandManager.command("shop restock",Middlewares.isDeveloper,CardClient.shopRestock);  //check
-CommandManager.command("trader restock",Middlewares.isDeveloper,CardClient.traderRestock);  //check
-CommandManager.command("give :player gold :ammount",Middlewares.isDeveloper,CardClient.givePlayerGold); //check
-CommandManager.command("give :player pack :packId",Middlewares.isDeveloper,CardClient.givePlayerPack);  //check
-CommandManager.command("give :player card :cardId",Middlewares.isDeveloper,CardClient.givePlayerCard);  //check
-CommandManager.command("give :player claims :claims",Middlewares.isDeveloper,CardClient.givePlayerClaims);  //check
-CommandManager.command("give :player trades :trades",Middlewares.isDeveloper,CardClient.givePlayerTrades);  //check
-CommandManager.command("give :player luck :luckModifier",Middlewares.isDeveloper,CardClient.givePlayerLuck);    //check
-CommandManager.command("giveall gold :ammount",Middlewares.isDeveloper,CardClient.giveAllGold); //check
-CommandManager.command("giveall rewards :times",Middlewares.isDeveloper,CardClient.giveAllRewards); //check
+CommandManager.command("shop restock",Middlewares.isDeveloper,AdminController.shopRestock);  //check
+CommandManager.command("trader restock",Middlewares.isDeveloper,AdminController.traderRestock);  //check
+CommandManager.command("give :player gold :ammount",Middlewares.isDeveloper,AdminController.givePlayerGold); //check
+CommandManager.command("give :player pack :packId",Middlewares.isDeveloper,AdminController.givePlayerPack);  //check
+CommandManager.command("give :player card :cardId",Middlewares.isDeveloper,AdminController.givePlayerCard);  //check
+CommandManager.command("give :player claims :claims",Middlewares.isDeveloper,AdminController.givePlayerClaims);  //check
+CommandManager.command("give :player trades :trades",Middlewares.isDeveloper,AdminController.givePlayerTrades);  //check
+CommandManager.command("give :player luck :luckModifier",Middlewares.isDeveloper,AdminController.givePlayerLuck);    //check
+CommandManager.command("giveall gold :ammount",Middlewares.isDeveloper,AdminController.giveAllGold); //check
+CommandManager.command("giveall rewards :times",Middlewares.isDeveloper,AdminController.giveAllRewards); //check
 //###################### SHOP COMMANDS ######################
-CommandManager.command("shop info",CardClient.shopInfo);    //check
-CommandManager.command("shop buy :packName*",CardClient.shopBuy);   //check
-CommandManager.command("shop buyx :ammount :packName*",CardClient.shopBuyX);    //check
+CommandManager.command("shop info",ShopController.shopInfo);    //check
+CommandManager.command("shop buy :packName*",ShopController.shopBuy);   //check
+CommandManager.command("shop buyx :ammount :packName*",ShopController.shopBuyX);    //check
 //###################### TRADER COMMANDS ######################
-CommandManager.command("trader info",CardClient.traderInfo);    //check
-CommandManager.command("trader sell :cardName*",CardClient.traderSell);
-CommandManager.command("trader reroll :cards*",CardClient.traderReroll);
-CommandManager.command("trader guess :stars",CardClient.traderGuess);
+CommandManager.command("trader info",TraderController.traderInfo);    //check
+CommandManager.command("trader sell :cardName*",TraderController.traderSell);
+CommandManager.command("trader reroll :cards*",TraderController.traderReroll);
+CommandManager.command("trader guess :stars",TraderController.traderGuess);
 //###################### CARDS COMMANDS ######################
-CommandManager.command("card info :cardValue*",CardClient.cardInfo);     //check
-CommandManager.command("card search :cardName",CardClient.cardSearch);      //check
+CommandManager.command("card info :cardValue*",CardController.cardInfo);     //check
+CommandManager.command("card search :cardName",CardController.cardSearch);      //check
 //###################### PACKS COMMANDS ######################
-CommandManager.command("pack info :packValue*",CardClient.packInfo);        //check
-CommandManager.command("pack list",CardClient.packList);        //check
+CommandManager.command("pack info :packValue*",PackController.packInfo);        //check
+CommandManager.command("pack list",PackController.packList);        //check
 //###################### PROFILE COMMANDS ######################
-CommandManager.command("my profile",CardClient.myProfile);      //check
-CommandManager.command("my cards",CardClient.myCards);      //check
-CommandManager.command("my packs",CardClient.myPacks);  //check
-CommandManager.command("profile :mention",CardClient.profile);      //check
-CommandManager.command("profile cards :mention",CardClient.profileCards);   //check
-CommandManager.command("profile packs :mention",CardClient.profilePacks);   //check
-CommandManager.command("leaderboard gold",CardClient.leaderboardGold);
-CommandManager.command("leaderboard cards",CardClient.leaderboardCards);
-CommandManager.command("leaderboard stars",CardClient.leaderboardStars);
+CommandManager.command("my profile",ProfileController.myProfile);      //check
+CommandManager.command("my cards",ProfileController.myCards);      //check
+CommandManager.command("my packs",ProfileController.myPacks);  //check
+CommandManager.command("profile :mention",ProfileController.profile);      //check
+CommandManager.command("profile cards :mention",ProfileController.profileCards);   //check
+CommandManager.command("profile packs :mention",ProfileController.profilePacks);   //check
 //###################### PLAYER COMMANDS ######################
-CommandManager.command("wish :cardName",CardClient.wish);   //check
-CommandManager.command("open pack :packName*",CardClient.packOpen); //check
-CommandManager.command("trade :userName :cardName",(msg:Message)=>msg.channel.send("Not implemented"));
+CommandManager.command("wish :cardName",PlayerController.wish);   //check
+CommandManager.command("open pack :packName*",PlayerController.packOpen); //check
+CommandManager.command("trade :mention :cards*",PlayerController.trade);

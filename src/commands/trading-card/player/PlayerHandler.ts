@@ -38,7 +38,7 @@ export class PlayerHandler{
     }
 
     private addToPlayersCache(player:Player){
-        this.cachedPlayersMap.set(player.id,player);
+        this.cachedPlayersMap.set(player.getId(),player);
     }
 
     private addRegularsToCache(){

@@ -1,7 +1,7 @@
 const secret = require("../src/secret.json"); //file with your bot credentials/token/etc
 import {CommandManager}  from "./CommandManager";
 import {Client,Message} from "discord.js";
-import { startCardGame } from "./commands/trading-card/CardMain";
+import { startCardGame } from "./commands/trading-card/main";
 
 var client=new Client();
 client.login(secret.token);

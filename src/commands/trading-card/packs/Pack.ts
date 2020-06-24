@@ -7,7 +7,7 @@ import { isNullOrUndefined } from "util";
 import { DropRate } from "../drop-generation/DropRate";
 import { ItemGenerator } from "../structure/ItemGenerator";
 import { PackSaveData } from "./PackSaveData";
-import { GoldSystem } from "../GoldSystem";
+import { GoldSystem } from "../systems/GoldSystem";
 
 export class Pack extends ItemGenerator<Card>{
     public static readonly CARDS_PER_PACK=5;

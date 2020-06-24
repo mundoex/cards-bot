@@ -1,7 +1,7 @@
 import { CardManager } from "../cards/CardManager";
 import { Mathf } from "../utils/Mathf";
 import { Rarity } from "../drop-generation/Rarity";
-import { GoldSystem } from "../GoldSystem";
+import { GoldSystem } from "../systems/GoldSystem";
 import { Card } from "../cards/Card";
 import { PackManager } from "../packs/PackManager";
 import { Pack } from "../packs/Pack";

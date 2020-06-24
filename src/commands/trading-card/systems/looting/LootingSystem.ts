@@ -1,12 +1,8 @@
-import { Card } from "./cards/Card";
-import { Player } from "./player/Player";
-import { Mathf } from "./utils/Mathf";
-import { PlayerHandler } from "./player/PlayerHandler";
-
-interface LootResult{
-    winner:Player;
-    losers:Array<Player>;
-}
+import { Card } from "../../cards/Card";
+import { Player } from "../../player/Player";
+import { Mathf } from "../../utils/Mathf";
+import { PlayerHandler } from "../../player/PlayerHandler";
+import { LootResult } from "./LootResult";
 
 export class LootingSystem{
     static splitLoot(packOwner:Player, needers:Array<Player>, card:Card){
@@ -28,12 +24,12 @@ export class LootingSystem{
     }
 
     static validNeeders(usersIds:Array<string>){
-        return usersIds.map((id:string)=>{return PlayerHandler.getInstance().getPlayerById(id)}).filter((player:Player)=>{return player.claims>0});
+        return usersIds.map((id:string)=>{return PlayerHandler.getInstance().getPlayerById(id)}).filter((player:Player)=>{return player.hasClaims()});
     }
 
     static isOwnerNeeder(packOwner:Player, needers:Array<Player>) : boolean{
         for(let i=0;i<needers.length;i++){
-            if(packOwner.id===needers[i].id){
+            if(packOwner.getId()===needers[i].getId()){
                 return true;
             }
         }
@@ -41,6 +37,6 @@ export class LootingSystem{
     }
 
     static removeWinnerFromNeeders(winner:Player,needers:Array<Player>) : Array<Player>{
-        return needers.filter((needer:Player)=>{return needer.id!==winner.id});
+        return needers.filter((needer:Player)=>{return needer.getId()!==winner.getId()});
     }
 }

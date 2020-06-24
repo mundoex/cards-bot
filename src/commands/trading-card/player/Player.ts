@@ -8,23 +8,24 @@ import { Pack } from "../packs/Pack";
 import { PackManager } from "../packs/PackManager";
 import { Rarity } from "../drop-generation/Rarity";
 import { Trader } from "../trader/Trader";
+import { ItemContainer } from "../inventory/ItemContainer";
 
 export class Player{
     private static readonly GOLD_RATE=125;
     private static readonly CLAIM_RATE=3;
     private static readonly TRADE_RATE=1;
 
-    id:string;
-    gold:number;
-    claims:number;
-    trades:number;
-    cards:Inventory;
-    packs:Inventory;
-    top10CardIds:Array<number>;
-    packsOpened:number;
-    dryStreak:number;
-    cardWishId:number;
-    luckModifier:number;
+    private id:string;
+    private gold:number;
+    private claims:number;
+    private trades:number;
+    private cards:Inventory;
+    private packs:Inventory;
+    private top10CardIds:Array<number>;
+    private packsOpened:number;
+    private dryStreak:number;
+    private cardWishId:number;
+    private luckModifier:number;
 
     constructor(id:string,gold:number,claims:number,trades:number,cards:Inventory,packs:Inventory,top10CardIds:Array<number>,packsOpened:number,dryStreak:number,cardWishId:number,luckModifier:number){
         this.id=id;
@@ -50,11 +51,24 @@ export class Player{
         return new PlayerSaveData(this.id,this.gold,this.claims,this.trades,this.cards.toSaveData(),this.packs.toSaveData(),this.top10CardIds,this.packsOpened,this.dryStreak,this.cardWishId,this.luckModifier);
     }
 
-    trade(){
-
+    ////#region ############ METHODS ############
+    trade(cardtoSend:Card,cardToReceive:Card,requestedPlayer:Player) : boolean{
+        if(this.hasTrades() && requestedPlayer.hasTrades()){
+            if(this.hasCard(cardtoSend) && requestedPlayer.hasCard(cardToReceive)){
+                this.removeCard(cardtoSend);
+                this.addCard(cardToReceive);
+                this.removeTrade();
+                
+                requestedPlayer.removeCard(cardToReceive);
+                requestedPlayer.addCard(cardtoSend);
+                requestedPlayer.removeTrade();
+                return true;
+            }
+        }
+        return false;
     }
 
-    wish(cardName:string){
+    wish(cardName:string) : boolean{
         const card=CardManager.getInstance().getItemByName(cardName);
         if(card){
             this.cardWishId=card.id;
@@ -65,23 +79,23 @@ export class Player{
         }
     }
 
-    buyPack(pack:Pack){
+    buyPack(pack:Pack) : boolean{
         if(this.gold>=pack.goldValue){
             this.addPack(pack);
-            this.gold-=pack.goldValue;
+            this.removeGold(pack.goldValue);
             return true;
         }else{
             return false;
         }
     }
 
-    buyXPack(pack:Pack,ammount:number){
+    buyXPack(pack:Pack,ammount:number) : boolean{
         const totalGoldAmmount=pack.goldValue*ammount;
         if(this.gold>=totalGoldAmmount){
             for (let index = 0; index < ammount; index++) {
                 this.addPack(pack);
             }
-            this.gold-=totalGoldAmmount;
+            this.removeGold(totalGoldAmmount);
             return true;
         }else{
             return false;
@@ -93,15 +107,81 @@ export class Player{
             this.removePack(pack);
             this.packsOpened++;
             const cards=pack.open(this.dryStreak,this.luckModifier,this.cardWishId);
-            const ultraCards=cards.map((card:Card)=>{ if(Rarity.isInUltraRange(card.stars)){ return card; }});
-            ultraCards.length!==0 ? this.dryStreak=0 : this.dryStreak++;
+            const hasUltra=cards.filter((card:Card)=>{return Rarity.isInUltraRange(card.stars);}).length>0;
+            hasUltra ? this.dryStreak=0 : this.dryStreak++;
             this.save();
             return cards;
         }else{
             return undefined;
         }
     }
+    ////#endregion
 
+    ////#region ############ GETTERS ############
+    getId() : string{
+        return this.id;
+    }
+
+    getGold() : number{
+        return this.gold;
+    }
+
+    getClaims() : number{
+        return this.claims;
+    }
+
+    getTrades() : number{
+        return this.trades;
+    }
+
+    getWish() : number{
+        return this.cardWishId;
+    }
+
+    getLuckModifier() : number{
+        return this.luckModifier;
+    }
+
+    getDryStreak() : number{
+        return this.dryStreak;
+    }
+
+    hasCard(card:Card) : boolean{
+        return this.cards.contains(card.id);
+    }
+
+    hasPack(pack:Pack) : boolean{
+        return this.cards.contains(pack.id);
+    }
+
+    hasClaims() : boolean{
+        return this.claims>0;
+    }
+
+    hasTrades() : boolean{
+        return this.trades>0;
+    }
+
+    getCards() : Map<number,number>{
+        return this.cards.items;
+    }
+
+    getPacks() : Map<number,number>{
+        return this.cards.items;
+    }
+
+    isEmptyCards() : boolean{
+        return this.cards.items.size<=0;
+    }
+
+    isEmptyPacks() : boolean{
+        return this.packs.items.size<=0;
+    }
+
+
+    ////#endregion
+
+    ////#region ############ SETTERS ############
     addCard(card:Card){
         this.cards.add(card.id, 1);
         this.save();
@@ -139,18 +219,6 @@ export class Player{
         this.save();
     }
 
-    hasCard(card:Card) : boolean{
-        return this.cards.contains(card.id);
-    }
-
-    hasPack(pack:Pack) : boolean{
-        return this.cards.contains(pack.id);
-    }
-
-    hasClaims() : boolean{
-        return this.claims>0;
-    }
-
     addClaim(ammount:number=1){
         this.claims+=ammount;
         this.save();
@@ -180,7 +248,8 @@ export class Player{
         this.luckModifier-=ammount;
         this.save();
     }
-
+    ////#endregion
+    
     reroll(card1:Card,card2:Card,card3:Card,trader:Trader) : Card{
         const hasCards=this.cards.contains(card1.id) && this.cards.contains(card2.id) && this.cards.contains(card3.id);
         if(hasCards){
@@ -195,14 +264,9 @@ export class Player{
         }
     }
 
-    
-
     save() : void{
         const playerPath=Paths.getPlayerFilePath(this.id);
         writeFileSync(playerPath,JSON.stringify(this.toSaveData()));
     }
 
-
-
-    
 }
