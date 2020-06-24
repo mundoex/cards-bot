@@ -17,7 +17,7 @@ export class TraderController{
         let player=PlayerHandler.getInstance().getPlayerById(msg.author.id);
         const card=CardManager.getInstance().getItemByName(Stringf.upperCaseFirstChars(params.cardName.join(" ")));
         if(player!==undefined && card!==undefined){
-            const result=server.trader.buyBounty(player,card)!==undefined;
+            const result=server.trader.buyBounty(player,card);
             if(result){
                 msg.channel.send(`You sold ${card.name} for ${server.trader.bountyPrice(card.stars)} gold.`);
             }else{
