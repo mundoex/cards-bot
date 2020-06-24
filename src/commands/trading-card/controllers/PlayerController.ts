@@ -10,12 +10,12 @@ import { Stringf } from "../utils/Stringf";
 
 export class PlayerController{
     //###################### PLAYER COMMANDS ######################
-    //give :mention :cardName
+    //gift :mention :cardName
     static giftCard(msg:Message, client:Client, params:any){
         const mention=msg.mentions.users.first();
         if(mention===undefined){return msg.channel.send("Can't find that mention");}
         const gifter=PlayerHandler.getInstance().getPlayerById(msg.author.id);
-        const receiver=PlayerHandler.getInstance().getPlayerById(msg.author.id);
+        const receiver=PlayerHandler.getInstance().getPlayerById(mention.id);
         if(gifter===undefined && receiver===undefined){return msg.channel.send("Can't find user");}
         const card=CardManager.getInstance().getItemByName(Stringf.upperCaseFirstChars(params.cardName));
         if(card===undefined){return msg.channel.send("Can't find card");}
