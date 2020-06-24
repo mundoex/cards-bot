@@ -28,12 +28,16 @@ export class LootingSystem{
     }
 
     static isOwnerNeeder(packOwner:Player, needers:Array<Player>) : boolean{
-        for(let i=0;i<needers.length;i++){
-            if(packOwner.getId()===needers[i].getId()){
-                return true;
+        if(packOwner){
+            for(let i=0;i<needers.length;i++){
+                if(packOwner.getId()===needers[i].getId()){
+                    return true;
+                }
             }
+            return false;
+        }else{
+            return false;
         }
-        return false;
     }
 
     static removeWinnerFromNeeders(winner:Player,needers:Array<Player>) : Array<Player>{

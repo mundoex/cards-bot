@@ -65,9 +65,13 @@ export class PlayerController{
         if(player!==undefined && pack!==undefined){
             const cards:Array<Card>=player.openPack(pack);
             if(cards){
-                cards.forEach((card:Card)=>PlayerController.claimableCardPost(msg,player,card));
+                for (let index = 0; index < cards.length-1; index++) {
+                    const card = cards[index];
+                    PlayerController.claimableCardPost(msg,player,card);
+                }
+                PlayerController.claimableCardPost(msg,undefined,cards[cards.length-1]);
             }else{
-                msg.channel.send("You don't have that pack.");
+                msg.channel.send("You dont have that pack");
             }
         }else{
             msg.channel.send("No such pack");
