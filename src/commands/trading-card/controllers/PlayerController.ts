@@ -7,13 +7,14 @@ import { EmbedsManager } from "../client/EmbedsManager";
 import { LootingSystem } from "../systems/looting/LootingSystem";
 import { CardManager } from "../cards/CardManager";
 import { Mathf } from "../utils/Mathf";
+import { Stringf } from "../utils/Stringf";
 
 export class PlayerController{
     //###################### PLAYER COMMANDS ######################
     //wish :cardName
     static wish(msg:Message, client:Client, params:any){
         let player=PlayerHandler.getInstance().getPlayerById(msg.author.id);
-        const result=player.wish(params.cardName);
+        const result=player.wish(Stringf.upperCaseFirstChars(params.cardName));
         if(result){
             msg.channel.send("Wish set sucessfully");
         }else{
@@ -61,7 +62,7 @@ export class PlayerController{
     static packOpen(msg:Message, client:Client, params:any){
         const packName:string=params.packName.join(" ");
         let player=PlayerHandler.getInstance().getPlayerById(msg.author.id);
-        const pack=PackManager.getInstance().getItemByName(packName);
+        const pack=PackManager.getInstance().getItemByName(Stringf.upperCaseFirstChars(packName));
         if(player!==undefined && pack!==undefined){
             const cards:Array<Card>=player.openPack(pack);
             if(cards){
@@ -69,7 +70,7 @@ export class PlayerController{
                     const card = cards[index];
                     PlayerController.claimableCardPost(msg,player,card);
                 }
-                PlayerController.claimableCardPost(msg,undefined,cards[cards.length-1]);
+                msg.channel.send("----- No priority card incoming -----").then((sentMsg:Message)=>PlayerController.claimableCardPost(msg,undefined,cards[cards.length-1]));
             }else{
                 msg.channel.send("You dont have that pack");
             }

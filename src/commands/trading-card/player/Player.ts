@@ -9,6 +9,7 @@ import { PackManager } from "../packs/PackManager";
 import { Rarity } from "../drop-generation/Rarity";
 import { Trader } from "../trader/Trader";
 import { ItemContainer } from "../inventory/ItemContainer";
+import { SortType } from "../systems/sorting/SortType";
 
 export class Player{
     private static readonly GOLD_RATE=125;
@@ -58,7 +59,7 @@ export class Player{
                 this.removeCard(cardtoSend);
                 this.addCard(cardToReceive);
                 this.removeTrade();
-                
+
                 requestedPlayer.removeCard(cardToReceive);
                 requestedPlayer.addCard(cardtoSend);
                 requestedPlayer.removeTrade();
@@ -114,6 +115,10 @@ export class Player{
         }else{
             return undefined;
         }
+    }
+
+    sort(sortType:SortType){
+        
     }
     ////#endregion
 

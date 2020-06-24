@@ -4,6 +4,7 @@ import { server } from "../main";
 import { PlayerHandler } from "../player/PlayerHandler";
 import { Pack } from "../packs/Pack";
 import { PackManager } from "../packs/PackManager";
+import { Stringf } from "../utils/Stringf";
 
 export class ShopController{
     //###################### SHOP COMMANDS ######################    
@@ -16,7 +17,7 @@ export class ShopController{
     static shopBuy(msg:Message, client:Client, params:any){
         const packName=params.packName.join(" ");
         let player=PlayerHandler.getInstance().getPlayerById(msg.author.id);
-        const pack:Pack=PackManager.getInstance().getItemByName(packName);
+        const pack:Pack=PackManager.getInstance().getItemByName(Stringf.upperCaseFirstChars(packName));
         if(player!==undefined && pack!==undefined){
             const hasPackInStore=server.shop.hasStock(pack.id);
             if(hasPackInStore){
@@ -40,7 +41,7 @@ export class ShopController{
         const packName=params.packName.join(" ");
         const ammountSelected=parseInt(params.ammount);
         let player=PlayerHandler.getInstance().getPlayerById(msg.author.id);
-        const pack:Pack=PackManager.getInstance().getItemByName(packName);
+        const pack:Pack=PackManager.getInstance().getItemByName(Stringf.upperCaseFirstChars(packName));
         if(player!==undefined && pack!==undefined){
             const hasPackInStore=server.shop.contains(pack.id);
             const ammountInStore=server.shop.inventory.items.get(pack.id);

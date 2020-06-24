@@ -3,6 +3,7 @@ import { EmbedsManager } from "../client/EmbedsManager";
 import { server } from "../main";
 import { PlayerHandler } from "../player/PlayerHandler";
 import { CardManager } from "../cards/CardManager";
+import { Stringf } from "../utils/Stringf";
 
 export class TraderController{
     //###################### TRADER COMMANDS ######################  
@@ -14,7 +15,7 @@ export class TraderController{
     //trader sell :cardName
     static traderSell(msg:Message, client:Client, params:any){
         let player=PlayerHandler.getInstance().getPlayerById(msg.author.id);
-        const card=CardManager.getInstance().getItemByName(params.cardName.join(" "));
+        const card=CardManager.getInstance().getItemByName(Stringf.upperCaseFirstChars(params.cardName.join(" ")));
         if(player!==undefined && card!==undefined){
             if(player.hasCard(card) && server.trader.hasBounty(card)){
                 player.removeCard(card);

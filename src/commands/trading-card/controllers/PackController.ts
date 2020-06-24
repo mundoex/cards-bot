@@ -3,6 +3,7 @@ import { Pack } from "../packs/Pack";
 import { Mathf } from "../utils/Mathf";
 import { PackManager } from "../packs/PackManager";
 import { EmbedsManager } from "../client/EmbedsManager";
+import { Stringf } from "../utils/Stringf";
 const paginationEmbed=require("discord.js-pagination");
 
 export class PackController{
@@ -11,7 +12,7 @@ export class PackController{
     static packInfo(msg:Message, client:Client, params:any){
         const packValue=params.packValue.join(" ");
         let pack:Pack;
-        Mathf.isNumeric(packValue) ? pack=PackManager.getInstance().getItemById(parseInt(packValue)) : pack=PackManager.getInstance().getItemByName(packValue);
+        Mathf.isNumeric(packValue) ? pack=PackManager.getInstance().getItemById(parseInt(packValue)) : pack=PackManager.getInstance().getItemByName(Stringf.upperCaseFirstChars(packValue));
         if(pack){
             paginationEmbed(msg,EmbedsManager.getPackEmbedPages(pack),['⏪', '⏩'],EmbedsManager.PAGINATION_TIMEOUT);
         }else{

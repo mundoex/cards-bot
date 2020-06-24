@@ -3,6 +3,7 @@ import { Card } from "../cards/Card";
 import { Mathf } from "../utils/Mathf";
 import { CardManager } from "../cards/CardManager";
 import { EmbedsManager } from "../client/EmbedsManager";
+import { Stringf } from "../utils/Stringf";
 
 export class CardController{
     //###################### CARDS COMMANDS ######################
@@ -10,7 +11,7 @@ export class CardController{
     static cardInfo(msg:Message, client:Client, params:any){
         const cardValue=params.cardValue.join(" ");
         let card:Card;
-        Mathf.isNumeric(cardValue) ? card=CardManager.getInstance().getItemById(parseInt(cardValue)) : card=CardManager.getInstance().getItemByName(cardValue);
+        Mathf.isNumeric(cardValue) ? card=CardManager.getInstance().getItemById(parseInt(cardValue)) : card=CardManager.getInstance().getItemByName(Stringf.upperCaseFirstChars(cardValue));
         if(card){
             const embed=EmbedsManager.cardInfoEmbedMessage(card);
             msg.channel.send(embed);
