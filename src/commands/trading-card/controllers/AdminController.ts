@@ -6,6 +6,8 @@ import { CardManager } from "../cards/CardManager";
 import { Player } from "../player/Player";
 import { ShopController } from "./ShopController";
 import { TraderController } from "./TraderController";
+import { PlayerController } from "./PlayerController";
+import { Pack } from "../packs/Pack";
 
 export class AdminController{
     //###################### ADMIN COMMANDS ######################
@@ -143,5 +145,14 @@ export class AdminController{
             } 
         });
         msg.channel.send(`Rewards given`);
+    }
+
+    //spawn pack :packId
+    static spawnPack(msg:Message,client:Client,params:any){
+        const pack=PackManager.getInstance().getItemById(params.packId);
+        const cards=pack.open();
+        for (let i = 0; i < cards.length; i++) {
+            PlayerController.claimableCardPost(msg,undefined,cards[i]);
+        }
     }
 }

@@ -5,14 +5,15 @@ import { GoldSystem } from "../systems/GoldSystem";
 import { Card } from "../cards/Card";
 import { PackManager } from "../packs/PackManager";
 import { Pack } from "../packs/Pack";
+import { Player } from "../player/Player";
 
 export class Trader {
     private static readonly NEED_CAPACITY=5;
-    private static readonly MULTIPLIER=6;
-    needIds:Array<number>;
+    private static readonly MULTIPLIER=5;
+    needIds:Set<number>;
 
     constructor() {
-        this.needIds=new Array<number>();
+        this.needIds=new Set<number>();
         this.fillNeedIds();
     }
 
@@ -20,12 +21,16 @@ export class Trader {
         const idsRange=[1,CardManager.getInstance().cards.size];
         for (let i = 0; i < Trader.NEED_CAPACITY; i++) {
             const random=Mathf.randomInt(idsRange[0],idsRange[1]);
-            this.needIds.push(random);
+            this.needIds.add(random);
         }
     }
 
     bountyPrice(stars:number){
         return GoldSystem.starsToGold(stars)*Trader.MULTIPLIER;
+    }
+
+    isEmpty(){
+        return this.needIds.size<=0;
     }
 
     reRoll(card1:Card,card2:Card,card3:Card) : Card{
@@ -38,18 +43,31 @@ export class Trader {
 
     guessStar(){}
 
+    removeBounty(card:Card){
+        this.needIds.delete(card.id);
+    }
+
     forceRestock(){
-        this.needIds=new Array<number>();
+        this.needIds=new Set<number>();
         this.fillNeedIds();
         console.log("Trader Restocked");
     }
 
-    hasBounty(card:Card) : boolean{
-        for(let index=0;index<this.needIds.length;index++){
-            if(this.needIds[index]===card.id){
-                return true;
+    buyBounty(player:Player,card:Card){
+        if(player.hasCard(card) && this.hasBounty(card)){
+            player.removeCard(card);
+            player.addGold(this.bountyPrice(card.stars));
+            this.removeBounty(card);
+            if(this.isEmpty()){
+                this.forceRestock();
             }
+            return true;
+        }else{
+            return false;
         }
-        return false;
+    }
+
+    hasBounty(card:Card) : boolean{
+        return this.needIds.has(card.id);
     }
 }

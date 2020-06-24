@@ -17,11 +17,9 @@ export class TraderController{
         let player=PlayerHandler.getInstance().getPlayerById(msg.author.id);
         const card=CardManager.getInstance().getItemByName(Stringf.upperCaseFirstChars(params.cardName.join(" ")));
         if(player!==undefined && card!==undefined){
-            if(player.hasCard(card) && server.trader.hasBounty(card)){
-                player.removeCard(card);
-                const gold=server.trader.bountyPrice(card.stars);
-                player.addGold(gold);
-                msg.channel.send(`You sold ${card.name} for ${gold} gold.`)
+            const result=server.trader.buyBounty(player,card)!==undefined;
+            if(result){
+                msg.channel.send(`You sold ${card.name} for ${server.trader.bountyPrice(card.stars)} gold.`);
             }else{
                 msg.channel.send("You or the trader dont have that card");
             }
@@ -39,5 +37,22 @@ export class TraderController{
     //trader guess :stars
     static traderGuess(msg:Message, client:Client, params:any) {
         msg.channel.send("Nah no gambling yet");
+    }
+
+    //trader check
+    static traderCheckIfPlayerHasBounties(msg:Message, client:Client, params:any){
+        let player=PlayerHandler.getInstance().getPlayerById(msg.author.id);
+        let text:string="You have: ";
+        if(player){
+            server.trader.needIds.forEach((id:number)=>{
+                const card=CardManager.getInstance().getItemById(id);
+                if(player.hasCard(card)){
+                    text+=card.name+" ";
+                }
+            });
+            msg.channel.send(text);
+        }else{
+            msg.channel.send("Error finding player");
+        }
     }
 }

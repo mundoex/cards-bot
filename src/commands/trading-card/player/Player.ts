@@ -5,11 +5,9 @@ import { Paths } from "../utils/Paths";
 import { writeFileSync } from "fs";
 import { CardManager } from "../cards/CardManager";
 import { Pack } from "../packs/Pack";
-import { PackManager } from "../packs/PackManager";
 import { Rarity } from "../drop-generation/Rarity";
 import { Trader } from "../trader/Trader";
-import { ItemContainer } from "../inventory/ItemContainer";
-import { SortType } from "../systems/sorting/SortType";
+import { DropRate } from "../drop-generation/DropRate";
 
 export class Player{
     private static readonly GOLD_RATE=125;
@@ -109,16 +107,12 @@ export class Player{
             this.packsOpened++;
             const cards=pack.open(this.dryStreak,this.luckModifier,this.cardWishId);
             const hasUltra=cards.filter((card:Card)=>{return Rarity.isInUltraRange(card.stars);}).length>0;
-            hasUltra ? this.dryStreak=0 : this.dryStreak++;
+            (hasUltra || this.getDryStreak()>DropRate.DRY_STREAK_THRESHOLD) ? this.dryStreak=0 : this.dryStreak++;
             this.save();
             return cards;
         }else{
             return undefined;
         }
-    }
-
-    sort(sortType:SortType){
-        
     }
     ////#endregion
 

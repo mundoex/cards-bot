@@ -34,6 +34,7 @@ CommandManager.command("give :player trades :trades",Middlewares.isDeveloper,Adm
 CommandManager.command("give :player luck :luckModifier",Middlewares.isDeveloper,AdminController.givePlayerLuck);    //check
 CommandManager.command("giveall gold :ammount",Middlewares.isDeveloper,AdminController.giveAllGold); //check
 CommandManager.command("giveall rewards :times",Middlewares.isDeveloper,AdminController.giveAllRewards); //check
+CommandManager.command("spawn pack :packId",Middlewares.isDeveloper,AdminController.spawnPack); //check
 //###################### SHOP COMMANDS ######################
 CommandManager.command("shop info",ShopController.shopInfo);    //check
 CommandManager.command("shop buy :packName*",ShopController.shopBuy);   //check
@@ -43,6 +44,7 @@ CommandManager.command("trader info",TraderController.traderInfo);    //check
 CommandManager.command("trader sell :cardName*",TraderController.traderSell);
 CommandManager.command("trader reroll :cards*",TraderController.traderReroll);
 CommandManager.command("trader guess :stars",TraderController.traderGuess);
+CommandManager.command("trader check",TraderController.traderCheckIfPlayerHasBounties);
 //###################### CARDS COMMANDS ######################
 CommandManager.command("card info :cardValue*",CardController.cardInfo);     //check
 CommandManager.command("card search :cardName",CardController.cardSearch);      //check
