@@ -2,7 +2,7 @@ import { Card } from "../cards/Card";
 import { Inventory } from "../inventory/Inventory";
 import { PlayerSaveData } from "./PlayerSaveData";
 import { Paths } from "../utils/Paths";
-import { writeFileSync } from "fs";
+import { writeFileSync, read } from "fs";
 import { CardManager } from "../cards/CardManager";
 import { Pack } from "../packs/Pack";
 import { Rarity } from "../drop-generation/Rarity";
@@ -256,6 +256,11 @@ export class Player{
 
     removeLuck(ammount:number=1){
         this.luckModifier-=ammount;
+        this.save();
+    }
+
+    setCards(cards:Iterable<readonly [number,number]>){
+        this.cards.items=new Map(cards);
         this.save();
     }
     ////#endregion

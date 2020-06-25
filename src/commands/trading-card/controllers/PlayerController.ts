@@ -7,6 +7,7 @@ import { EmbedsManager } from "../client/EmbedsManager";
 import { LootingSystem } from "../systems/looting/LootingSystem";
 import { CardManager } from "../cards/CardManager";
 import { Stringf } from "../utils/Stringf";
+import { SortingSystem } from "../systems/sorting/SortingSystem";
 
 export class PlayerController{
     //###################### PLAYER COMMANDS ######################
@@ -112,7 +113,7 @@ export class PlayerController{
         const embed:MessageEmbed=EmbedsManager.cardEmbedMessage(card);
         msg.channel.send(embed).then((sentMsg:Message)=>{
             sentMsg.react("👍");
-            const collector=sentMsg.createReactionCollector(EmbedsManager.needersEmojiFilter,{max:5,time:13000});
+            const collector=sentMsg.createReactionCollector(EmbedsManager.needersEmojiFilter,{max:15,time:13000});
             const usersSet=new Set<string>();
             const neederPlayers=new Array<Player>();
             const neederFilter=(user:User)=>{return user.bot===false && usersSet.has(user.id)===false};
@@ -125,7 +126,7 @@ export class PlayerController{
                         neederPlayer.removeClaim();
                         neederPlayers.push(neederPlayer);
                     }else{
-                        msg.channel.send(`${user.username} has no claims left`);
+                        msg.channel.send(`${user} has no claims left`);
                     }
                 }
             });
@@ -133,12 +134,38 @@ export class PlayerController{
             collector.on("end",(msgr:MessageReaction)=>{
                 const lootResult=LootingSystem.splitLoot(packOwnerPlayer,neederPlayers,card);
                 if(lootResult.winner){
-                    const winnerName:string=msg.guild.members.cache.get(lootResult.winner.getId()).user.username;
+                    const winnerName=msg.guild.members.cache.get(lootResult.winner.getId()).user;
                     sentMsg.channel.send(`${winnerName} has won ${card.name}.`);
                 }else{
                     sentMsg.channel.send(`${card.name} got away unclaimed.`)
                 }
             });
         });
+    }
+
+    //sort :type
+    static sort(msg:Message,client:Client,params:any){
+        if(params===undefined && params.type===undefined){return msg.channel.send("Error in sorting option");}
+        let player=PlayerHandler.getInstance().getPlayerById(msg.author.id);
+        if(player===undefined){return msg.channel.send("Error finding player");}
+        switch(params.type){
+            case("id"):
+                player.setCards(SortingSystem.sortById(player));
+                break;
+            case("rarity"):
+            case("stars"):
+                player.setCards(SortingSystem.sortByRarity(player));
+                break;
+            case("quantity"):
+            case("ammount"):
+                player.setCards(SortingSystem.sortByQuantity(player));
+                break;
+            case("name"):
+            case("alphabetical"):
+                player.setCards(SortingSystem.sortByAlphabetical(player));
+                break;
+            default:return msg.channel.send("Error in sorting option");
+        }
+        msg.channel.send("Sorted");
     }
 }
