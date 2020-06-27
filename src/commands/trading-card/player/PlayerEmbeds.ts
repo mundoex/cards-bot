@@ -49,7 +49,7 @@ export class PlayerEmbeds{
         this.updatePlayerPacksEmbed();
         //cards collection
         this.collectionEmbedPages=new Array<MessageEmbed>();
-        this.collectionTables=PlayerEmbeds.defaultTables;
+        this.collectionTables=PlayerEmbeds.getDefaultCollectionTables();
         this.updatePlayerCollectionTables();
         this.updatePlayerCollectionEmbed();
         //sort event

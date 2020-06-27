@@ -11,7 +11,7 @@ import { PackController } from "./commands/trading-card/controllers/PackControll
 import { ProfileController } from "./commands/trading-card/controllers/ProfileController";
 import { PlayerController } from "./commands/trading-card/controllers/PlayerController";
 
-CommandManager.setPrefix("?");
+CommandManager.setPrefix("!");
 CommandManager.use(BotMiddleware.NotABot);
 
 //###################### HELP COMMANDS ######################

@@ -4,7 +4,7 @@ import { SortingSystem } from "./commands/trading-card/systems/sorting/SortingSy
 import { CardManager } from "./commands/trading-card/cards/CardManager";
 import { Arrayf } from "./commands/trading-card/utils/Arrayf";
 import { PlayerEmbeds } from "./commands/trading-card/player/PlayerEmbeds";
-import {getId,getName} from "pokemon";
+
 import { writeFileSync } from "fs";
 
 
