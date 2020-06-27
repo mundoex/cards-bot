@@ -4,6 +4,7 @@ import { Mathf } from "../utils/Mathf";
 import { PackManager } from "../packs/PackManager";
 import { EmbedsManager } from "../client/EmbedsManager";
 import { Stringf } from "../utils/Stringf";
+import { GameConstants } from "../global/GameConstants";
 const paginationEmbed=require("discord.js-pagination");
 
 export class PackController{
@@ -14,7 +15,7 @@ export class PackController{
         let pack:Pack;
         Mathf.isNumeric(packValue) ? pack=PackManager.getInstance().getItemById(parseInt(packValue)) : pack=PackManager.getInstance().getItemByName(Stringf.upperCaseFirstChars(packValue));
         if(pack){
-            paginationEmbed(msg,EmbedsManager.getPackEmbedPages(pack),['⏪', '⏩'],EmbedsManager.PAGINATION_TIMEOUT);
+            paginationEmbed(msg,EmbedsManager.getPackEmbedPages(pack),['⏪', '⏩'],GameConstants.PAGINATION_TIMEOUT);
         }else{
             msg.channel.send("No result found.");
         }

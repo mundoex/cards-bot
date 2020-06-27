@@ -1,15 +1,14 @@
 import { CardManager } from "../cards/CardManager";
 import { Mathf } from "../utils/Mathf";
 import { Rarity } from "../drop-generation/Rarity";
-import { GoldSystem } from "../systems/GoldSystem";
+import { GoldSystem } from "../systems/gold/GoldSystem";
 import { Card } from "../cards/Card";
 import { PackManager } from "../packs/PackManager";
 import { Pack } from "../packs/Pack";
 import { Player } from "../player/Player";
+import { GameConstants } from "../global/GameConstants";
 
 export class Trader {
-    private static readonly NEED_CAPACITY=5;
-    private static readonly MULTIPLIER=5;
     needIds:Set<number>;
 
     constructor() {
@@ -19,14 +18,14 @@ export class Trader {
 
     fillNeedIds(){
         const idsRange=[1,CardManager.getInstance().cards.size];
-        for (let i = 0; i < Trader.NEED_CAPACITY; i++) {
+        for (let i = 0; i < GameConstants.TRADER_NEED_CAPACITY; i++) {
             const random=Mathf.randomInt(idsRange[0],idsRange[1]);
             this.needIds.add(random);
         }
     }
 
     bountyPrice(stars:number){
-        return GoldSystem.starsToGold(stars)*Trader.MULTIPLIER;
+        return GoldSystem.starsToGold(stars)*GameConstants.TRADER_MULTIPLIER;
     }
 
     isEmpty(){

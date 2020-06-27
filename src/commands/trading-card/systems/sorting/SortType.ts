@@ -1,3 +1,0 @@
-export enum SortType{
-    ID,ALPHABETICAL,RARITY,QUANTITY
-}

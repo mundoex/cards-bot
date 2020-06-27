@@ -152,7 +152,7 @@ export class AdminController{
         const pack=PackManager.getInstance().getItemById(parseInt(params.packId));
         const cards=pack.open();
         for (let i = 0; i < cards.length; i++) {
-            PlayerController.claimableCardPost(msg,undefined,cards[i]);
+            PlayerController.claimableCardPost(msg,undefined,cards[i],"----- No priority card -----");
         }
     }
 }

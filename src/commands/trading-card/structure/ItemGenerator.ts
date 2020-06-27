@@ -1,7 +1,7 @@
 import { IManager } from "./IManager";
 import { Mathf } from "../utils/Mathf";
 import { isNullOrUndefined } from "util";
-import { Rarity } from "../drop-generation/Rarity";
+import { GameConstants } from "../global/GameConstants";
 
 export abstract class ItemGenerator<T>{
     possibleItemsIds:Array<number>;
@@ -34,11 +34,11 @@ export abstract class ItemGenerator<T>{
 
     getIdsArrayByRarity(rarity:number) : Array<number>{
         switch(rarity){
-            case(Rarity.ULTRA): return this.ultraItemsIds;
-            case(Rarity.LEGENDARY): return this.legendaryItemsIds;
-            case(Rarity.EPIC):  return this.epicItemsIds;
-            case(Rarity.RARE):  return this.rareItemsIds;
-            case(Rarity.COMMON):    return this.commonItemsIds;
+            case(GameConstants.RARITY_ULTRA): return this.ultraItemsIds;
+            case(GameConstants.RARITY_LEGENDARY): return this.legendaryItemsIds;
+            case(GameConstants.RARITY_EPIC):  return this.epicItemsIds;
+            case(GameConstants.RARITY_RARE):  return this.rareItemsIds;
+            case(GameConstants.RARITY_COMMON):    return this.commonItemsIds;
             default:    return this.commonItemsIds;    
         }
     }

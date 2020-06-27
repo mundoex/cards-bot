@@ -1,5 +1,5 @@
 import { Mathf } from "../utils/Mathf";
-import { DropRate } from "./DropRate";
+import { GameConstants } from "../global/GameConstants";
 import { Rarity } from "./Rarity";
 
 export class DropGenerator{
@@ -11,40 +11,40 @@ export class DropGenerator{
 
     constructor(luckModifier:number=0){
         this.luckModifier=luckModifier;
-        this.rare=DropRate.RARE+Mathf.percentageOf(DropRate.RARE,luckModifier);
-        this.epic=DropRate.EPIC+Mathf.percentageOf(DropRate.EPIC,luckModifier);
-        this.legendary=DropRate.LEGENDARY+Mathf.percentageOf(DropRate.LEGENDARY,luckModifier);
-        this.ultra=DropRate.ULTRA+Mathf.percentageOf(DropRate.ULTRA,luckModifier);
+        this.rare=GameConstants.DROP_RATE_RARE+Mathf.percentageOf(GameConstants.DROP_RATE_RARE,luckModifier);
+        this.epic=GameConstants.DROP_RATE_EPIC+Mathf.percentageOf(GameConstants.DROP_RATE_EPIC,luckModifier);
+        this.legendary=GameConstants.DROP_RATE_LEGENDARY+Mathf.percentageOf(GameConstants.DROP_RATE_LEGENDARY,luckModifier);
+        this.ultra=GameConstants.DROP_RATE_ULTRA+Mathf.percentageOf(GameConstants.DROP_RATE_ULTRA,luckModifier);
     }
 
-    get ultraRange() : Array<number>{
+    private get ultraRange() : Array<number>{
         return [0, this.ultra];
     }
 
-    get legendaryRange() : Array<number>{
-        return [DropRate.ULTRA, DropRate.ULTRA+this.legendary];
+    private get legendaryRange() : Array<number>{
+        return [GameConstants.DROP_RATE_ULTRA,GameConstants.DROP_RATE_ULTRA+this.legendary];
     }
     
-    get epicRange() : Array<number>{
-        return [DropRate.LEGENDARY, DropRate.LEGENDARY+this.epic];
+    private get epicRange() : Array<number>{
+        return [GameConstants.DROP_RATE_LEGENDARY, GameConstants.DROP_RATE_LEGENDARY+this.epic];
     }
 
-    get rareRange() : Array<number>{
-        return [DropRate.EPIC, DropRate.EPIC+this.rare];
+    private get rareRange() : Array<number>{
+        return [GameConstants.DROP_RATE_EPIC, GameConstants.DROP_RATE_EPIC+this.rare];
     }
 
     generateRandomRarity() : number{
         const random=Mathf.randomDecimal(0,100,4)/100;
         if(this.isUltraDrop(random)){
-            return Rarity.ULTRA;
+            return GameConstants.RARITY_ULTRA;
         }else if(this.isLegendaryDrop(random)){
-            return Rarity.LEGENDARY;
+            return GameConstants.RARITY_LEGENDARY;
         }else if(this.isEpicDrop(random)){
-            return Rarity.EPIC;
+            return GameConstants.RARITY_EPIC;
         }else if(this.isRareDrop(random)){
-            return Rarity.RARE;
+            return GameConstants.RARITY_RARE;
         }else{
-            return Rarity.COMMON;
+            return GameConstants.RARITY_COMMON;
         }
     }
 

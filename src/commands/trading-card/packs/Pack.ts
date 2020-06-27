@@ -4,13 +4,12 @@ import { Mathf } from "../utils/Mathf";
 import { DropGenerator } from "../drop-generation/DropGenerator";
 import { Rarity } from "../drop-generation/Rarity";
 import { isNullOrUndefined } from "util";
-import { DropRate } from "../drop-generation/DropRate";
+import { GameConstants } from "../global/GameConstants";
 import { ItemGenerator } from "../structure/ItemGenerator";
 import { PackSaveData } from "./PackSaveData";
-import { GoldSystem } from "../systems/GoldSystem";
+import { GoldSystem } from "../systems/gold/GoldSystem";
 
 export class Pack extends ItemGenerator<Card>{
-    public static readonly CARDS_PER_PACK=5;
     id:number;
     name:string;
     rarity:Rarity;
@@ -34,11 +33,11 @@ export class Pack extends ItemGenerator<Card>{
         const possibleCards:Array<Card>=this.managerInstance.getItemsByIds(this.possibleItemsIds);
         possibleCards.forEach((card:Card)=>{
             switch(card.rarity.rarity){
-                case(Rarity.ULTRA): this.ultraItemsIds.push(card.id); break;
-                case(Rarity.LEGENDARY): this.legendaryItemsIds.push(card.id); break;
-                case(Rarity.EPIC): this.epicItemsIds.push(card.id); break;
-                case(Rarity.RARE): this.rareItemsIds.push(card.id); break;
-                case(Rarity.COMMON): this.commonItemsIds.push(card.id); break;
+                case(GameConstants.RARITY_ULTRA): this.ultraItemsIds.push(card.id); break;
+                case(GameConstants.RARITY_LEGENDARY): this.legendaryItemsIds.push(card.id); break;
+                case(GameConstants.RARITY_EPIC): this.epicItemsIds.push(card.id); break;
+                case(GameConstants.RARITY_RARE): this.rareItemsIds.push(card.id); break;
+                case(GameConstants.RARITY_COMMON): this.commonItemsIds.push(card.id); break;
                 default: this.commonItemsIds.push(card.id); break;
             }
         });
@@ -49,12 +48,12 @@ export class Pack extends ItemGenerator<Card>{
     }
 
     private static shouldEndDryStreak(dryStreak:number) : boolean{
-        return dryStreak>=DropRate.DRY_STREAK_THRESHOLD;
+        return dryStreak>=GameConstants.DRY_STREAK_THRESHOLD;
     }
 
     shouldGrantWish(wishedCard:Card, rarities:Array<number>) : boolean{
         if(this.contains(wishedCard.id)){
-            const shouldGrantWish:boolean=Mathf.randomInt(0,100)/100 <= DropRate.WISH;
+            const shouldGrantWish:boolean=Mathf.randomInt(0,100)/100 <= GameConstants.WISH_RATE;
             const isRarityPossible:boolean=rarities.find((rarity:number)=>{return rarity===Rarity.getRarityFromStars(wishedCard.stars);})!==undefined;
             return shouldGrantWish && isRarityPossible;
         }else{
@@ -65,7 +64,7 @@ export class Pack extends ItemGenerator<Card>{
     generatePackRarities(luckModifier:number) : Array<number>{
         const dropGenerator=new DropGenerator(luckModifier);
         const rarities=new Array<number>();
-        for(let i=0;i<Pack.CARDS_PER_PACK;i++){
+        for(let i=0;i<GameConstants.CARDS_PER_PACK;i++){
             rarities.push(dropGenerator.generateRandomRarity());   
         }
         return rarities;
@@ -75,7 +74,7 @@ export class Pack extends ItemGenerator<Card>{
         let rarities:Array<number>=this.generatePackRarities(luckModifier);
         //HANDLE DRYSTREAK
         if(Pack.shouldEndDryStreak(dryStreak)){
-            while(Rarity.averageRarity(rarities)<DropRate.DRY_STREAK_PACK_AVG){
+            while(Rarity.averageRarity(rarities)<GameConstants.DRY_STREAK_PACK_AVG_VALUE){
                 rarities=this.generatePackRarities(luckModifier);
             }
         }

@@ -9,17 +9,18 @@ import { Trader } from "../trader/Trader";
 import { CardManager } from "../cards/CardManager";
 import { Player } from "../player/Player";
 import { Inventory } from "../inventory/Inventory";
+import { GameConstants } from "../global/GameConstants";
+import { Arrayf } from "../utils/Arrayf";
 
 const  AsciiTable = require("ascii-table");
 const emojis:any={0: '0️⃣', 1: '1️⃣',2: '2️⃣', 3: '3️⃣', 4: '4️⃣', 5: '5️⃣',6: '6️⃣', 7: '7️⃣', 8: '8️⃣', 9: '9️⃣',10: '🔟'};
 
 export class EmbedsManager{
-    private static readonly CARDS_PER_TABLE=30;
-    public static readonly PAGINATION_TIMEOUT=60*1000;
-    private static readonly CLEAN_CACHE_TIMEOUT=10*60*1000;
+
     private static packsEmbedCache=new Map<number,Array<MessageEmbed>>();
     private static playerCardsEmbedCache=new Map<string,Array<MessageEmbed>>();
     private static playerPacksEmbedCache=new Map<string,Array<MessageEmbed>>();
+    private static defaultCollectionRows=EmbedsManager.getDefaultCollectionRows();
 
     static getHelpEmbed() : MessageEmbed{
         return new MessageEmbed().setTitle("Help Commands")
@@ -90,7 +91,7 @@ export class EmbedsManager{
         if(isNullOrUndefined(result)){
             result=EmbedsManager.generatePackCardsEmbedPages(pack);
             EmbedsManager.packsEmbedCache.set(pack.id, result);
-            setTimeout(()=>EmbedsManager.packsEmbedCache.delete(pack.id),EmbedsManager.CLEAN_CACHE_TIMEOUT);  //clean cache
+            setTimeout(()=>EmbedsManager.packsEmbedCache.delete(pack.id),GameConstants.CLEAN_CACHE_TIMEOUT);  //clean cache
             return result;
         }else{
             return result;
@@ -109,16 +110,17 @@ export class EmbedsManager{
 
     static generatePlayerCardsEmbedPages(player:Player) : Array<MessageEmbed>{
         let embedsResult=new Array<MessageEmbed>();
-        let table=new AsciiTable().setHeading("Name","Quantity","Rarity");
-        let counter=0;
         //empty
         if(player.isEmptyCards()){
             embedsResult.push(new MessageEmbed().setTitle("Cards Collection").setDescription("Empty"));
             return embedsResult;
         }
+        let table=new AsciiTable().setHeading("Name","Quantity","Rarity");
+        let counter=0;
+        
         for (const [key,value] of player.getCards().entries()) {
             const card:Card=CardManager.getInstance().getItemById(key);
-            if(counter===EmbedsManager.CARDS_PER_TABLE){  
+            if(counter===GameConstants.CARDS_PER_TABLE){  
                 embedsResult.push(new MessageEmbed().setTitle("Cards Collection").setDescription("```"+table.toString()+"```"));
                 table=new AsciiTable().setHeading("Name","Quantity","Rarity");
                 counter=0;
@@ -142,7 +144,7 @@ export class EmbedsManager{
         }
         for (const [key,value] of player.getPacks().entries()) {
             const pack:Pack=PackManager.getInstance().getItemById(key);
-            if(counter===EmbedsManager.CARDS_PER_TABLE){  
+            if(counter===GameConstants.CARDS_PER_TABLE){  
                 embedsResult.push(new MessageEmbed().setTitle("Packs Collection").setDescription("```"+table.toString()+"```"));
                 table=new AsciiTable().setHeading("Name","Quantity","Rarity");
                 counter=0;
@@ -162,7 +164,7 @@ export class EmbedsManager{
         let counter=0;
         for (let index = 0; index < cards.length; index++) {
             const card = cards[index];
-            if(counter===EmbedsManager.CARDS_PER_TABLE){  
+            if(counter===GameConstants.CARDS_PER_TABLE){  
                 embedsResult.push(new MessageEmbed().setTitle(pack.name).setDescription("```"+table.toString()+"```"));
                 table=new AsciiTable().setHeading("Id","Name","Stars");
                 counter=0;
@@ -201,21 +203,30 @@ export class EmbedsManager{
 
     static shopInfoEmbedMessage(shop:Shop) : MessageEmbed{
         let table=new AsciiTable().setHeading("Pack Name","Stock","Rarity","Price");
-
+        table.__edge="│";
+        table.__fill="─";
+        table.__top=";";
+        table.__bottom=";";
         for(const [key,value] of shop.inventory.items.entries()){
             const pack=PackManager.getInstance().getItemById(key);
             table.addRow(pack.name,value,pack.rarity.stars,pack.goldValue);
         }
-        return new MessageEmbed().setTitle("Packs Shop").setDescription("```"+table.toString()+"```");
+        return new MessageEmbed().setTitle("Packs Shop").setDescription(EmbedsManager.tableToStringMarkdown(table)).setImage(GameConstants.SHOP_IMAGE);
     }
 
     static traderInfoEmbedMessage(trader:Trader) : MessageEmbed{
-        let table=new AsciiTable().setHeading("Bounty Card Name","Rarity","Bounty Price");
+        let table=new AsciiTable().setHeading("Bounty Card Name","Pack","Rarity","Bounty Price");
+        table.__edge="│";
+        table.__fill="─";
+        table.__top=";";
+        table.__bottom=";";
         trader.needIds.forEach((id:number)=>{
             const card=CardManager.getInstance().getItemById(id);
-            table.addRow(card.name,card.rarity.stars,trader.bountyPrice(card.rarity.stars));
+            if(card){
+                table.addRow(card.name, PackManager.getInstance().getCardPack(card.id).name, card.rarity.stars, trader.bountyPrice(card.rarity.stars));
+            } 
         });
-        return new MessageEmbed().setTitle("Trader").setDescription("```"+table.toString()+"```");
+        return new MessageEmbed().setTitle("Trader").setDescription(EmbedsManager.tableToStringMarkdown(table)).setImage(GameConstants.TRADER_IMAGE);;
     }
 
     static playerEmbedMessage(title:string,player:Player): MessageEmbed{
@@ -225,8 +236,9 @@ export class EmbedsManager{
         table.addRow("Trades left: ",player.getTrades());
         table.addRow("Dry Streak: ",player.getDryStreak());
         table.addRow("Luck Modifier: ",player.getLuckModifier());
-        const card=CardManager.getInstance().getItemById(player.getWish());
-        card!==undefined ? table.addRow("Wish: ",card.name) : table.addRow("Wish: ","Nothing");
+        table.addRow("Total Packs Opened: ",player.getPacksOpened());
+        const wishedCard=CardManager.getInstance().getItemById(player.getWish());
+        wishedCard!==undefined ? table.addRow("Wish: ",wishedCard.name) : table.addRow("Wish: ","Nothing");
         return new MessageEmbed().setTitle(title+" Profile").setAuthor(title).setDescription("```"+table.toString()+"```");
     }
 
@@ -245,5 +257,30 @@ export class EmbedsManager{
             return new MessageEmbed().setTitle("Inventory").setDescription("Empty");
         }
         
+    }
+
+    static getCollecion(playerName:string, player:Player) : Array<MessageEmbed>{
+        const heading=["Id","Name","Ammount"];
+        return EmbedsManager.defaultCollectionRows.map(rowsPage=>{
+            let table=new AsciiTable();
+            table._heading=heading;
+            table._rows=rowsPage;
+            return new MessageEmbed().setTitle("playerName"+" Collection").setDescription("```js"+table.toString()+"```");
+        });
+    }
+
+    private static getDefaultCollectionRows() : Array<any>{
+        const cards=CardManager.getInstance().cards.values();
+        let rows=new Array();
+        for(const card of cards){
+            rows.push(card.id,card.name,"O");
+        }
+        return Arrayf.slitArrayInChunks(rows,GameConstants.CARDS_PER_TABLE);
+    }
+
+    public static tableToStringMarkdown(table:typeof AsciiTable) : string{
+        let resultText:string=table.toString();
+        ["┌",,"┐","└","┘"].forEach((corner:string)=>resultText=resultText.replace(";",corner));
+        return "```ts\n"+resultText+"```";
     }
 }

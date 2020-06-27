@@ -6,18 +6,14 @@ import { Rarity } from "../drop-generation/Rarity";
 import { Mathf } from "../utils/Mathf";
 import { DropGenerator } from "../drop-generation/DropGenerator";
 import { Slot } from "../inventory/Slot";
+import { GameConstants } from "../global/GameConstants";
 
 export class Shop extends ItemGenerator<Pack>{
-    
-    private static readonly SHOP_CAPACITY=7;
-    private static readonly AVAILABLE_PACKS_IDS=[1,2,3,4];
-    private static readonly SHOP_SLOTS=new Array<Slot>();
-    private static readonly PACK_AMMOUNT_RANGE=[2,5];
     inventory:Inventory;
 
     constructor(){
-        super(Shop.AVAILABLE_PACKS_IDS, PackManager.getInstance());
-        this.inventory=new Inventory(Shop.SHOP_CAPACITY, Shop.SHOP_SLOTS);
+        super(GameConstants.SHOP_AVAILABLE_PACKS_IDS, PackManager.getInstance());
+        this.inventory=new Inventory(GameConstants.SHOP_CAPACITY, GameConstants.SHOP_SLOTS);
     }
 
     get slotsSize() : number{
@@ -28,11 +24,11 @@ export class Shop extends ItemGenerator<Pack>{
         const possibleCards:Array<Pack>=this.managerInstance.getItemsByIds(this.possibleItemsIds);
         possibleCards.forEach((pack:Pack)=>{
             switch(pack.rarity.rarity){
-                case(Rarity.ULTRA): this.ultraItemsIds.push(pack.id); break;
-                case(Rarity.LEGENDARY): this.legendaryItemsIds.push(pack.id); break;
-                case(Rarity.EPIC): this.epicItemsIds.push(pack.id); break;
-                case(Rarity.RARE): this.rareItemsIds.push(pack.id); break;
-                case(Rarity.COMMON): this.commonItemsIds.push(pack.id); break;
+                case(GameConstants.RARITY_ULTRA): this.ultraItemsIds.push(pack.id); break;
+                case(GameConstants.RARITY_LEGENDARY): this.legendaryItemsIds.push(pack.id); break;
+                case(GameConstants.RARITY_EPIC): this.epicItemsIds.push(pack.id); break;
+                case(GameConstants.RARITY_RARE): this.rareItemsIds.push(pack.id); break;
+                case(GameConstants.RARITY_COMMON): this.commonItemsIds.push(pack.id); break;
                 default: this.commonItemsIds.push(pack.id); break;
             }
         });
@@ -41,14 +37,14 @@ export class Shop extends ItemGenerator<Pack>{
     generateRandomPackRarities() : Array<number>{
         const dropGenerator=new DropGenerator();
         const rarities=new Array<number>();
-        for(let i=0;i<Shop.SHOP_CAPACITY;i++){
+        for(let i=0;i<GameConstants.SHOP_CAPACITY;i++){
             rarities.push(dropGenerator.generateRandomRarity());   
         }
         return rarities;
     }
 
     generatePacksRandomAmmount() : number{
-        return Mathf.randomInt(Shop.PACK_AMMOUNT_RANGE[0],Shop.PACK_AMMOUNT_RANGE[1]);
+        return Mathf.randomInt(GameConstants.SHOP_PACK_AMMOUNT_RANGE[0],GameConstants.SHOP_PACK_AMMOUNT_RANGE[1]);
     }
 
     fillShop(){

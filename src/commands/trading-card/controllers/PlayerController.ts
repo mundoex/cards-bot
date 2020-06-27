@@ -8,6 +8,8 @@ import { LootingSystem } from "../systems/looting/LootingSystem";
 import { CardManager } from "../cards/CardManager";
 import { Stringf } from "../utils/Stringf";
 import { SortingSystem } from "../systems/sorting/SortingSystem";
+import { GameConstants } from "../global/GameConstants";
+const paginationEmbed=require("discord.js-pagination");
 
 export class PlayerController{
     //###################### PLAYER COMMANDS ######################
@@ -44,7 +46,8 @@ export class PlayerController{
     //wish :cardName
     static wish(msg:Message, client:Client, params:any){
         let player=PlayerHandler.getInstance().getPlayerById(msg.author.id);
-        const result=player.wish(Stringf.upperCaseFirstChars(params.cardName));
+        const cardValue=params.cardName.join(" ");
+        const result=player.wish(Stringf.upperCaseFirstChars(cardValue));
         if(result){
             msg.channel.send("Wish set sucessfully");
         }else{
@@ -100,7 +103,7 @@ export class PlayerController{
                     const card = cards[index];
                     PlayerController.claimableCardPost(msg,player,card);
                 }
-                msg.channel.send("----- No priority card incoming -----").then((sentMsg:Message)=>PlayerController.claimableCardPost(msg,undefined,cards[cards.length-1]));
+                PlayerController.claimableCardPost(msg,undefined,cards[cards.length-1],"----- No priority card -----");
             }else{
                 msg.channel.send("You dont have that pack");
             }
@@ -109,8 +112,9 @@ export class PlayerController{
         }
     }
 
-    static claimableCardPost(msg:Message,packOwnerPlayer:Player,card:Card){
+    static claimableCardPost(msg:Message,packOwnerPlayer:Player,card:Card,footer:string=undefined){
         const embed:MessageEmbed=EmbedsManager.cardEmbedMessage(card);
+        if(footer){ embed.setFooter(footer);}
         msg.channel.send(embed).then((sentMsg:Message)=>{
             sentMsg.react("👍");
             const collector=sentMsg.createReactionCollector(EmbedsManager.needersEmojiFilter,{max:15,time:13000});
@@ -148,24 +152,47 @@ export class PlayerController{
         if(params===undefined && params.type===undefined){return msg.channel.send("Error in sorting option");}
         let player=PlayerHandler.getInstance().getPlayerById(msg.author.id);
         if(player===undefined){return msg.channel.send("Error finding player");}
-        switch(params.type){
-            case("id"):
-                player.setCards(SortingSystem.sortById(player));
-                break;
-            case("rarity"):
-            case("stars"):
-                player.setCards(SortingSystem.sortByRarity(player));
-                break;
-            case("quantity"):
-            case("ammount"):
-                player.setCards(SortingSystem.sortByQuantity(player));
-                break;
-            case("name"):
-            case("alphabetical"):
-                player.setCards(SortingSystem.sortByAlphabetical(player));
-                break;
-            default:return msg.channel.send("Error in sorting option");
+        player.sort(params.type) ?  msg.channel.send("Sorted") : msg.channel.send("No sort type found for that word");
+    }
+
+    //my profile
+    static myProfile(msg:Message, client:Client, params:any){
+        let player=PlayerHandler.getInstance().getPlayerById(msg.author.id);
+        if(player){
+            const embed=player.playerEmbeds.profileEmbed.setTitle(msg.member.displayName+" Profile").setThumbnail(msg.author.avatarURL({format:"png"}));
+            msg.channel.send(embed);
+        }else{
+            msg.channel.send("Error finding player");
+        }   
+    }
+
+    //my cards
+    static myCards(msg:Message, client:Client, params:any){
+        let player=PlayerHandler.getInstance().getPlayerById(msg.author.id);
+        if(player){
+            const embeds=player.playerEmbeds.cardsEmbedPages;
+            paginationEmbed(msg,embeds,['⏪', '⏩'],GameConstants.PAGINATION_TIMEOUT);
+        }else{
+            msg.channel.send("Error finding player");
         }
-        msg.channel.send("Sorted");
+    }
+
+    //my collection
+    static collection(msg:Message,client:Client,params:any){
+        let player=PlayerHandler.getInstance().getPlayerById(msg.author.id);
+        if(player===undefined){return msg.channel.send("Error finding player");}
+        const embeds=player.playerEmbeds.collectionEmbedPages;
+        paginationEmbed(msg,embeds,['⏪', '⏩'],GameConstants.PAGINATION_TIMEOUT);
+    }
+        
+    //my packs
+    static myPacks(msg:Message, client:Client, params:any){
+        let player=PlayerHandler.getInstance().getPlayerById(msg.author.id);
+        if(player){
+            const embed=player.playerEmbeds.packsEmbedPage;
+            msg.channel.send(embed);
+        }else{
+            msg.channel.send("Error finding player");
+        }
     }
 }

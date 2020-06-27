@@ -1,19 +1,7 @@
 import { Mathf } from "../utils/Mathf";
+import { GameConstants } from "../global/GameConstants";
 
 export class Rarity{
-    //FAKE ENUM
-    public static readonly ULTRA=5;
-    public static readonly LEGENDARY=4;
-    public static readonly EPIC=3;
-    public static readonly RARE=2;
-    public static readonly COMMON=1;
-    //STAR RANGE
-    public static readonly ULTRA_RANGE=[10,10];
-    public static readonly LEGENDARY_RANGE=[8,9];
-    public static readonly EPIC_RANGE=[6,7];
-    public static readonly RARE_RANGE=[4,5];
-    public static readonly COMMON_RANGE=[1,3];
-
     stars:number;
     rarity:number;
     
@@ -24,11 +12,11 @@ export class Rarity{
 
     get toString() : string{
         switch(this.rarity){
-            case(Rarity.ULTRA): return "Ultra";
-            case(Rarity.LEGENDARY): return "Legendary";
-            case(Rarity.EPIC): return "Epic";
-            case(Rarity.RARE): return "Rare";
-            case(Rarity.COMMON): 
+            case(GameConstants.RARITY_ULTRA): return "Ultra";
+            case(GameConstants.RARITY_LEGENDARY): return "Legendary";
+            case(GameConstants.RARITY_EPIC): return "Epic";
+            case(GameConstants.RARITY_RARE): return "Rare";
+            case(GameConstants.RARITY_COMMON): 
             default: return "Common"; 
         }
     }
@@ -39,26 +27,26 @@ export class Rarity{
 
     get colorString() : string{
         switch(this.rarity){
-            case(Rarity.ULTRA): return ":red_circle:";
-            case(Rarity.LEGENDARY): return ":orange_circle:";
-            case(Rarity.EPIC): return ":purple_circle:";
-            case(Rarity.RARE): return ":blue_circle:";
-            case(Rarity.COMMON): 
+            case(GameConstants.RARITY_ULTRA): return ":red_circle:";
+            case(GameConstants.RARITY_LEGENDARY): return ":orange_circle:";
+            case(GameConstants.RARITY_EPIC): return ":purple_circle:";
+            case(GameConstants.RARITY_RARE): return ":blue_circle:";
+            case(GameConstants.RARITY_COMMON): 
             default: return ":white_circle:"; 
         }
     }
 
     static getRarityFromStars(stars:number){
         if(Rarity.isInUltraRange(stars)){
-            return Rarity.ULTRA;
+            return GameConstants.RARITY_ULTRA;
         }else if(Rarity.isInLegendaryRange(stars)){
-            return Rarity.LEGENDARY;
+            return GameConstants.RARITY_LEGENDARY;
         }else if(Rarity.isInEpicRange(stars)){
-            return Rarity.EPIC;
+            return GameConstants.RARITY_EPIC;
         }else if(Rarity.isInRareRange(stars)){
-            return Rarity.RARE;
+            return GameConstants.RARITY_RARE;
         }else{
-            return Rarity.COMMON;
+            return GameConstants.RARITY_COMMON;
         }
     }
 
@@ -67,22 +55,22 @@ export class Rarity{
     }
 
     static isInUltraRange(stars:number) : boolean{
-        return Mathf.inRange(Rarity.ULTRA_RANGE, stars);
+        return Mathf.inRange(GameConstants.ULTRA_RANGE, stars);
     }
 
      static isInLegendaryRange(stars:number) : boolean{
-        return Mathf.inRange(Rarity.LEGENDARY_RANGE, stars);
+        return Mathf.inRange(GameConstants.LEGENDARY_RANGE, stars);
     }
 
     static isInEpicRange(stars:number) : boolean{
-        return Mathf.inRange(Rarity.EPIC_RANGE, stars);
+        return Mathf.inRange(GameConstants.EPIC_RANGE, stars);
     }
 
     static isInRareRange(stars:number) : boolean{
-        return Mathf.inRange(Rarity.RARE_RANGE, stars);
+        return Mathf.inRange(GameConstants.RARE_RANGE, stars);
     }
 
     static isInCommonRange(stars:number) : boolean{
-        return Mathf.inRange(Rarity.COMMON_RANGE, stars);
+        return Mathf.inRange(GameConstants.COMMON_RANGE, stars);
     }
 }

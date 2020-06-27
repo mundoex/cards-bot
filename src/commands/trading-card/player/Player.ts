@@ -2,18 +2,17 @@ import { Card } from "../cards/Card";
 import { Inventory } from "../inventory/Inventory";
 import { PlayerSaveData } from "./PlayerSaveData";
 import { Paths } from "../utils/Paths";
-import { writeFileSync, read } from "fs";
+import { writeFileSync, read, writeFile } from "fs";
 import { CardManager } from "../cards/CardManager";
 import { Pack } from "../packs/Pack";
 import { Rarity } from "../drop-generation/Rarity";
 import { Trader } from "../trader/Trader";
-import { DropRate } from "../drop-generation/DropRate";
+import { GameConstants } from "../global/GameConstants";
+import { Mathf } from "../utils/Mathf";
+import { PlayerEmbeds } from "./PlayerEmbeds";
+import { SortingSystem } from "../systems/sorting/SortingSystem";
 
 export class Player{
-    private static readonly GOLD_RATE=125;
-    private static readonly CLAIM_RATE=3;
-    private static readonly TRADE_RATE=1;
-
     private id:string;
     private gold:number;
     private claims:number;
@@ -25,6 +24,7 @@ export class Player{
     private dryStreak:number;
     private cardWishId:number;
     private luckModifier:number;
+    playerEmbeds:PlayerEmbeds;
 
     constructor(id:string,gold:number,claims:number,trades:number,cards:Inventory,packs:Inventory,top10CardIds:Array<number>,packsOpened:number,dryStreak:number,cardWishId:number,luckModifier:number){
         this.id=id;
@@ -38,6 +38,7 @@ export class Player{
         this.dryStreak=dryStreak;
         this.cardWishId=cardWishId;
         this.luckModifier=luckModifier;
+        this.playerEmbeds=new PlayerEmbeds(this);
     }
 
     static fromSaveData(playerSaveData:PlayerSaveData) : Player{
@@ -51,7 +52,33 @@ export class Player{
     }
 
     ////#region ############ METHODS ############
-    trade(cardtoSend:Card,cardToReceive:Card,requestedPlayer:Player) : boolean{
+    sort(type:string){
+        switch(type){
+            case("id"):
+                this.setCards(SortingSystem.sortById(this));
+                this.playerEmbeds.sortEventListener.emit("sort",this);
+                return true;
+            case("rarity"):
+            case("stars"):
+                this.setCards(SortingSystem.sortByRarity(this));
+                this.playerEmbeds.sortEventListener.emit("sort",this);
+                return true;
+            case("quantity"):
+            case("ammount"):
+                this.setCards(SortingSystem.sortByQuantity(this));
+                this.playerEmbeds.sortEventListener.emit("sort",this);
+                return true;
+            case("name"):
+            case("alphabetical"):
+                this.setCards(SortingSystem.sortByAlphabetical(this));
+                this.playerEmbeds.sortEventListener.emit("sort",this);
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    trade(cardtoSend:Card, cardToReceive:Card, requestedPlayer:Player) : boolean{
         if(this.hasTrades() && requestedPlayer.hasTrades()){
             if(this.hasCard(cardtoSend) && requestedPlayer.hasCard(cardToReceive)){
                 this.removeCard(cardtoSend);
@@ -61,6 +88,7 @@ export class Player{
                 requestedPlayer.removeCard(cardToReceive);
                 requestedPlayer.addCard(cardtoSend);
                 requestedPlayer.removeTrade();
+                this.playerEmbeds.profileEventListener.emit("profile update",this);
                 return true;
             }
         }
@@ -71,6 +99,7 @@ export class Player{
         const card=CardManager.getInstance().getItemByName(cardName);
         if(card){
             this.cardWishId=card.id;
+            this.playerEmbeds.profileEventListener.emit("profile update",this);
             this.save();
             return true;
         }else{
@@ -82,6 +111,7 @@ export class Player{
         if(this.gold>=pack.goldValue){
             this.addPack(pack);
             this.removeGold(pack.goldValue);
+            this.playerEmbeds.profileEventListener.emit("profile update",this);
             return true;
         }else{
             return false;
@@ -95,6 +125,7 @@ export class Player{
                 this.addPack(pack);
             }
             this.removeGold(totalGoldAmmount);
+            this.playerEmbeds.profileEventListener.emit("profile update",this);
             return true;
         }else{
             return false;
@@ -107,7 +138,12 @@ export class Player{
             this.packsOpened++;
             const cards=pack.open(this.dryStreak,this.luckModifier,this.cardWishId);
             const hasUltra=cards.filter((card:Card)=>{return Rarity.isInUltraRange(card.stars);}).length>0;
-            (hasUltra || this.getDryStreak()>DropRate.DRY_STREAK_THRESHOLD) ? this.dryStreak=0 : this.dryStreak++;
+            const hasLegendary=cards.filter((card:Card)=>{return Rarity.isInLegendaryRange(card.stars);}).length>0;
+            if(hasLegendary && Mathf.inRange([1,GameConstants.DRY_STREAK_THRESHOLD-1],this.getDryStreak())){
+                this.dryStreak--;
+            }
+            (hasUltra || this.getDryStreak()>=GameConstants.DRY_STREAK_THRESHOLD) ? this.dryStreak=0 : this.dryStreak++;
+            this.playerEmbeds.profileEventListener.emit("profile update",this);
             this.save();
             return cards;
         }else{
@@ -188,74 +224,105 @@ export class Player{
         return this.packs.items.size<=0;
     }
 
-
+    getPacksOpened() : number{
+        return this.packsOpened;
+    }
     ////#endregion
 
     ////#region ############ SETTERS ############
     addCard(card:Card){
         this.cards.add(card.id, 1);
+        this.playerEmbeds.cardsEventListener.emit("card update", this, card.id, 1);
+        this.playerEmbeds.profileEventListener.emit("profile update",this);
         this.save();
     }
 
     removeCard(card:Card){
         this.cards.remove(card.id, 1);
+        this.playerEmbeds.cardsEventListener.emit("card update", this, card.id, this.getCards().get(card.id) || 0);
+        this.playerEmbeds.profileEventListener.emit("profile update",this);
         this.save();
     }
 
     addPack(pack:Pack){
         this.packs.add(pack.id, 1);
+        this.playerEmbeds.packsEventListener.emit("pack update",this);
+        this.playerEmbeds.profileEventListener.emit("profile update",this);
         this.save();
     }
 
     addGold(ammount:number){
         this.gold+=ammount;
+        this.playerEmbeds.profileEventListener.emit("profile update",this);
         this.save();
     }
 
     removeGold(ammount:number){
         this.gold-=ammount;
+        this.playerEmbeds.profileEventListener.emit("profile update",this);
         this.save();
     }
 
     removePack(pack:Pack){
         this.packs.remove(pack.id, 1);
+        this.playerEmbeds.packsEventListener.emit("pack update",this);
         this.save();
     }
 
     addRewards(){
-        this.gold+=Player.GOLD_RATE;
-        this.trades+=Player.TRADE_RATE;
-        this.claims+=Player.CLAIM_RATE;
+        this.gold+=GameConstants.GOLD_RATE;
+        this.trades+=GameConstants.TRADE_RATE;
+        this.claims+=GameConstants.CLAIM_RATE;
+        this.playerEmbeds.profileEventListener.emit("profile update",this);
         this.save();
     }
 
     addClaim(ammount:number=1){
         this.claims+=ammount;
+        this.playerEmbeds.profileEventListener.emit("profile update",this);
         this.save();
     }
 
     removeClaim(ammount:number=1){
         this.claims-=ammount;
+        this.playerEmbeds.profileEventListener.emit("profile update",this);
         this.save();
     }
 
     addTrade(ammount:number=1){
         this.trades+=ammount;
+        this.playerEmbeds.profileEventListener.emit("profile update",this);
         this.save();
     }
 
     removeTrade(ammount:number=1){
         this.trades-=ammount;
+        this.playerEmbeds.profileEventListener.emit("profile update",this);
         this.save();
     }
 
     addLuck(ammount:number=1){
         this.luckModifier+=ammount;
+        this.playerEmbeds.profileEventListener.emit("profile update",this);
         this.save();
     }
 
     removeLuck(ammount:number=1){
         this.luckModifier-=ammount;
+        this.playerEmbeds.profileEventListener.emit("profile update",this);
+        this.save();
+    }
+
+
+    addDryStreak(ammount:number=1){
+        this.dryStreak+=ammount;
+        this.playerEmbeds.profileEventListener.emit("profile update",this);
+        this.save();
+    }
+
+    removeDryStreak(ammount:number=1){
+        this.dryStreak-=ammount;
+        this.playerEmbeds.profileEventListener.emit("profile update",this);
         this.save();
     }
 
@@ -281,7 +348,7 @@ export class Player{
 
     save() : void{
         const playerPath=Paths.getPlayerFilePath(this.id);
-        writeFileSync(playerPath,JSON.stringify(this.toSaveData()));
+        writeFile(playerPath,JSON.stringify(this.toSaveData()),()=>{});
     }
 
 }

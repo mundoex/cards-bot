@@ -11,7 +11,7 @@ import { PackController } from "./commands/trading-card/controllers/PackControll
 import { ProfileController } from "./commands/trading-card/controllers/ProfileController";
 import { PlayerController } from "./commands/trading-card/controllers/PlayerController";
 
-CommandManager.setPrefix("!");
+CommandManager.setPrefix("?");
 CommandManager.use(BotMiddleware.NotABot);
 
 //###################### HELP COMMANDS ######################
@@ -52,15 +52,16 @@ CommandManager.command("card search :cardName",CardController.cardSearch);      
 CommandManager.command("pack info :packValue*",PackController.packInfo);        //check
 CommandManager.command("pack list",PackController.packList);        //check
 //###################### PROFILE COMMANDS ######################
-CommandManager.command("my profile",ProfileController.myProfile);      //check
-CommandManager.command("my cards",ProfileController.myCards);      //check
-CommandManager.command("my packs",ProfileController.myPacks);  //check
 CommandManager.command("profile :mention",ProfileController.profile);      //check
 CommandManager.command("profile cards :mention",ProfileController.profileCards);   //check
 CommandManager.command("profile packs :mention",ProfileController.profilePacks);   //check
 //###################### PLAYER COMMANDS ######################
-CommandManager.command("wish :cardName",PlayerController.wish);   //check
+CommandManager.command("wish :cardName*",PlayerController.wish);   //check
 CommandManager.command("open pack :packName*",PlayerController.packOpen); //check
 CommandManager.command("trade :mention :cards*",PlayerController.trade);
 CommandManager.command("gift :mention :cardName",PlayerController.giftCard);
 CommandManager.command("sort :type",PlayerController.sort);
+CommandManager.command("my profile",PlayerController.myProfile);      //check
+CommandManager.command("my cards",PlayerController.myCards);      //check
+CommandManager.command("my packs",PlayerController.myPacks);  //check
+CommandManager.command("my collection",PlayerController.collection);
