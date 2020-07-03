@@ -35,6 +35,8 @@ CommandManager.command("give :player luck :luckModifier",Middlewares.isDeveloper
 CommandManager.command("giveall gold :ammount",Middlewares.isDeveloper,AdminController.giveAllGold); //check
 CommandManager.command("giveall rewards :times",Middlewares.isDeveloper,AdminController.giveAllRewards); //check
 CommandManager.command("spawn pack :packId",Middlewares.isDeveloper,AdminController.spawnPack); //check
+CommandManager.command("remove :player card :cardId",Middlewares.isDeveloper,AdminController.removePlayerCard); //check
+
 //###################### SHOP COMMANDS ######################
 CommandManager.command("shop info",ShopController.shopInfo);    //check
 CommandManager.command("shop buy :packName*",ShopController.shopBuy);   //check

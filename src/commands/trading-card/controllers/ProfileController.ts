@@ -26,7 +26,7 @@ export class ProfileController{
     //find owner :cardName*
     static find(msg:Message, client:Client, params:any){
         const cardValue=params.cardName.join(" ");
-        if(params.cardValue===undefined){
+        if(params.cardName===undefined){
             return msg.channel.send("No card found");
         }
         const card=CardManager.getInstance().getItemByName(Stringf.upperCaseFirstChars(cardValue));

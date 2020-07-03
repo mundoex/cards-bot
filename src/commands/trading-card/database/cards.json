@@ -5169,7 +5169,7 @@
        "id":738,
        "name":"Mega Gengar",
        "show":"Pokémon",
-       "imageURL":"https://img.pokemondb.net/artwork/agengar-mega.jpg",
+       "imageURL":"https://img.pokemondb.net/artwork/gengar-mega.jpg",
        "stars":10
    },
    {
@@ -5302,18 +5302,18 @@
        "id":757,
        "name":"Mega Garchomp",
        "show":"Pokémon",
-       "imageURL":"https://img.pokemondb.net/artwork/Garchomp-mega.jpg",
+       "imageURL":"https://img.pokemondb.net/artwork/garchomp-mega.jpg",
        "stars":10
    },
    {
-       "id":757,
+       "id":758,
        "name":"Mega Lucario",
        "show":"Pokémon",
        "imageURL":"https://img.pokemondb.net/artwork/lucario-mega.jpg",
        "stars":10
    },
    {
-       "id":758,
+       "id":759,
        "name":"Mega Abomasnow",
        "show":"Pokémon",
        "imageURL":"https://img.pokemondb.net/artwork/abomasnow-mega.jpg",
