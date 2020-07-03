@@ -55,6 +55,7 @@ export class PlayerController{
         }
     }
 
+
     //trade :mention :cards*
     static trade(msg:Message, client:Client, params:any){
         const user=msg.mentions.users.first();
@@ -101,9 +102,13 @@ export class PlayerController{
             if(cards){
                 for (let index = 0; index < cards.length-1; index++) {
                     const card = cards[index];
-                    PlayerController.claimableCardPost(msg,player,card);
+                    player.hasCard(card) ?  PlayerController.claimableCardPost(msg,player,card) :  PlayerController.claimableCardPost(msg,player,card,"New for collection");
                 }
-                PlayerController.claimableCardPost(msg,undefined,cards[cards.length-1],"----- No priority card -----");
+                const lastCard=cards[cards.length-1];
+                player.hasCard(lastCard) ?  
+                    PlayerController.claimableCardPost(msg,player,lastCard,"----- No priority card -----") :  
+                    PlayerController.claimableCardPost(msg,player,lastCard,"----- No priority card -----\nNew for collection");
+
             }else{
                 msg.channel.send("You dont have that pack");
             }

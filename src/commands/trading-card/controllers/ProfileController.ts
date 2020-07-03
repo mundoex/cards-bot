@@ -2,6 +2,9 @@ import { Message, Client, MessageEmbed } from "discord.js";
 import { PlayerHandler } from "../player/PlayerHandler";
 import { EmbedsManager } from "../client/EmbedsManager";
 import { GameConstants } from "../global/GameConstants";
+import { Player } from "../player/Player";
+import { CardManager } from "../cards/CardManager";
+import { Stringf } from "../utils/Stringf";
 const paginationEmbed=require("discord.js-pagination");
 
 export class ProfileController{
@@ -18,6 +21,25 @@ export class ProfileController{
         }else{
             msg.channel.send("Error finding player");
         }
+    }
+
+    //find owner :cardName*
+    static find(msg:Message, client:Client, params:any){
+        const cardValue=params.cardName.join(" ");
+        if(params.cardValue===undefined){
+            return msg.channel.send("No card found");
+        }
+        const card=CardManager.getInstance().getItemByName(Stringf.upperCaseFirstChars(cardValue));
+        let result="Players with that card: ";
+        if(card){
+            PlayerHandler.getInstance().cachedPlayersMap.forEach((player:Player)=>{
+                if(player.hasCard(card)){result+=`${msg.guild.members.cache.get(player.getId()).user}`;};
+            });
+            msg.channel.send(result);
+        }else{
+            msg.channel.send("No card found");
+        }
+        
     }
 
     //profile cards :mention

@@ -55,6 +55,7 @@ CommandManager.command("pack list",PackController.packList);        //check
 CommandManager.command("profile :mention",ProfileController.profile);      //check
 CommandManager.command("profile cards :mention",ProfileController.profileCards);   //check
 CommandManager.command("profile packs :mention",ProfileController.profilePacks);   //check
+CommandManager.command("find owner :cardName*",ProfileController.find);   //check
 //###################### PLAYER COMMANDS ######################
 CommandManager.command("wish :cardName*",PlayerController.wish);   //check
 CommandManager.command("open pack :packName*",PlayerController.packOpen); //check
