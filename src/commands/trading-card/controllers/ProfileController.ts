@@ -31,7 +31,6 @@ export class ProfileController{
 
     //find owner :cardName*
     static find(msg:Message, client:Client, params:any){
-<<<<<<< HEAD
         try{
             const cardValue=ControllerUtils.parsePokemonName(params.cardName);
             const card=CardManager.getInstance().getItemByName(cardValue);
@@ -40,17 +39,6 @@ export class ProfileController{
             let result="Players with that card: ";
             PlayerHandler.getInstance().playerAPI.cachedPlayersMap.forEach((player:Player)=>{
                 if(player.hasCard(card)){result+=`${msg.guild.members.cache.get(player.getId).user.username}`;};
-=======
-        const cardValue=params.cardName.join(" ");
-        if(params.cardName===undefined){
-            return msg.channel.send("No card found");
-        }
-        const card=CardManager.getInstance().getItemByName(Stringf.upperCaseFirstChars(cardValue));
-        let result="Players with that card: ";
-        if(card){
-            PlayerHandler.getInstance().cachedPlayersMap.forEach((player:Player)=>{
-                if(player.hasCard(card)){result+=`${msg.guild.members.cache.get(player.getId()).user}`;};
->>>>>>> c2a126510ab934820445335bfaba35a23792c019
             });
             msg.channel.send(result);
         }catch(err){

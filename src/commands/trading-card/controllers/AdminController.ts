@@ -90,7 +90,6 @@ export class AdminController{
         }
     }
 
-<<<<<<< HEAD
     //give :player exp :exp
     static givePlayerExperience(msg:Message, client:Client, params:any){
         try{
@@ -107,26 +106,6 @@ export class AdminController{
             msg.channel.send(err.toString());
         }
     }
-=======
-    //remove :player card :cardId
-    static removePlayerCard(msg:Message, client:Client, params:any){
-        const user=msg.mentions.users.first();
-        if(user){
-            let player=PlayerHandler.getInstance().getPlayerById(user.id);
-            const cardId=parseInt(params.cardId);
-            const card=CardManager.getInstance().getItemById(cardId);
-            if(player!==undefined && card!==undefined){
-                player.removeCard(card);
-                msg.channel.send(`Admin has given ${user.username} ${card.name}.`);
-            }else{
-                msg.channel.send("Error finding player or card");
-            }
-        }else{
-            msg.channel.send("Error finding mention");
-        }
-    }
-
->>>>>>> c2a126510ab934820445335bfaba35a23792c019
     //give :player claims :claims
     static givePlayerClaims(msg:Message, client:Client, params:any){
         try{

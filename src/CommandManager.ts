@@ -39,14 +39,8 @@ CommandManager.command("give :player modifier gold :modifier",Middlewares.isDeve
 CommandManager.command("give :player modifier exp :modifier",Middlewares.isDeveloper,AdminController.givePlayeExpModifier);    //check
 CommandManager.command("giveall gold :ammount",Middlewares.isDeveloper,AdminController.giveAllGold); //check
 CommandManager.command("giveall rewards :times",Middlewares.isDeveloper,AdminController.giveAllRewards); //check
-<<<<<<< HEAD
 CommandManager.command("spawn pack :packId",Middlewares.isDeveloper,AdminController.spawnPack); 
 CommandManager.command("spawn ultra",Middlewares.isDeveloper,AdminController.spawnUltra); 
-=======
-CommandManager.command("spawn pack :packId",Middlewares.isDeveloper,AdminController.spawnPack); //check
-CommandManager.command("remove :player card :cardId",Middlewares.isDeveloper,AdminController.removePlayerCard); //check
-
->>>>>>> c2a126510ab934820445335bfaba35a23792c019
 //###################### SHOP COMMANDS ######################
 CommandManager.command("shop info",ShopController.shopInfo);
 CommandManager.command("si",ShopController.shopInfo);  
