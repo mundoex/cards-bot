@@ -13,6 +13,11 @@ export class Inventory extends ItemContainer<number> implements ISaveable<Invent
         return new Inventory(inventorySaveData.capacity,inventorySaveData.slots);
     }
 
+    //@Override
+    // full() : boolean{
+    //     return this.totalItemsAmmount()>=this.capacity;
+    // }
+
     toSaveData() : InventorySaveData{
         let slotsArray=new Array<Slot>();
         for (let [key, value] of this.items){

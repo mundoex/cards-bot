@@ -23,7 +23,11 @@ export class Mathf{
 
     static isNumeric(text:string) : boolean{
         return text.match(/^[0-9]+$/) != null;
-      }
+    }
+
+    static multipleOf(numberToCheck:number,multipleOf:number) : boolean{
+        return numberToCheck % multipleOf === 0;
+    }
 
 
 }

@@ -1,46 +1,46 @@
 import { Message, Client } from "discord.js";
-import { EmbedsManager } from "../client/EmbedsManager";
+import { HelpEmbeds } from "../embeds/HelpEmbeds";
 
 export class HelpController{
     //###################### HELP COMMANDS ######################
     //help
     static help(msg:Message, client:Client, params:any){
-        msg.channel.send(EmbedsManager.getHelpEmbed());
+        msg.channel.send(HelpEmbeds.getHelpEmbed());
     }
 
     //game help
     static gameHelp(msg:Message, client:Client, params:any){
-        msg.channel.send(EmbedsManager.getGameHelpEmbed());
+        msg.channel.send(HelpEmbeds.getGameHelpEmbed());
     }
 
     //card help
     static cardHelp(msg:Message, client:Client, params:any){
-        msg.channel.send(EmbedsManager.getCardHelpEmbed());
+        msg.channel.send(HelpEmbeds.getCardHelpEmbed());
     }
 
     //pack help
     static packHelp(msg:Message, client:Client, params:any){
-        msg.channel.send(EmbedsManager.getPackHelpEmbed());
+        msg.channel.send(HelpEmbeds.getPackHelpEmbed());
     }
 
     //profile help
     static profileHelp(msg:Message, client:Client, params:any){
-        msg.channel.send(EmbedsManager.getProfileHelpEmbed());
+        msg.channel.send(HelpEmbeds.getProfileHelpEmbed());
     }
 
     //player help
     static playerHelp(msg:Message, client:Client, params:any){
-        msg.channel.send(EmbedsManager.getPlayerHelpEmbed());
+        msg.channel.send(HelpEmbeds.getPlayerHelpEmbed());
     }
 
     //shop help
     static shopHelp(msg:Message, client:Client, params:any){
-        msg.channel.send(EmbedsManager.getShopHelpEmbed());
+        msg.channel.send(HelpEmbeds.getShopHelpEmbed());
     }
 
     //trader help
     static traderHelp(msg:Message, client:Client, params:any){
-        msg.channel.send(EmbedsManager.getTraderHelpEmbed());
+        msg.channel.send(HelpEmbeds.getTraderHelpEmbed());
     }
 
 }

@@ -7,13 +7,17 @@ import { Mathf } from "../utils/Mathf";
 import { DropGenerator } from "../drop-generation/DropGenerator";
 import { Slot } from "../inventory/Slot";
 import { GameConstants } from "../global/GameConstants";
+import { Broadcaster } from "../broadcaster/Broadcaster";
 
 export class Shop extends ItemGenerator<Pack>{
     inventory:Inventory;
-
-    constructor(){
+    shopRange:Array<number>;
+    message:string;
+    constructor(message:string,shopCapacity:number=GameConstants.SHOP_CAPACITY,shopRange:Array<number>=GameConstants.SHOP_PACK_AMMOUNT_RANGE){
         super(GameConstants.SHOP_AVAILABLE_PACKS_IDS, PackManager.getInstance());
-        this.inventory=new Inventory(GameConstants.SHOP_CAPACITY, GameConstants.SHOP_SLOTS);
+        this.inventory=new Inventory(shopCapacity*2, new Array<Slot>());
+        this.shopRange=shopRange;
+        this.message=message;
     }
 
     get slotsSize() : number{
@@ -44,7 +48,7 @@ export class Shop extends ItemGenerator<Pack>{
     }
 
     generatePacksRandomAmmount() : number{
-        return Mathf.randomInt(GameConstants.SHOP_PACK_AMMOUNT_RANGE[0],GameConstants.SHOP_PACK_AMMOUNT_RANGE[1]);
+        return Mathf.randomInt(this.shopRange[0],this.shopRange[1]);
     }
 
     fillShop(){
@@ -55,7 +59,7 @@ export class Shop extends ItemGenerator<Pack>{
     forceRestock(){
         this.inventory.clear();
         this.fillShop();
-        console.log("Shop Restocked");
+        Broadcaster.getInstance().broadcast(this.message);
     }
 
     sellItem(itemId:number,ammount:number=1){
@@ -68,15 +72,5 @@ export class Shop extends ItemGenerator<Pack>{
     hasStock(packId:number){
         return this.inventory.items.has(packId);
     }
-
-    print(){
-        for (const [key, value] of this.inventory.items.entries()) {
-            console.log(key, value);
-        }
-    }
-
-
-
-    
 
 }

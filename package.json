@@ -17,16 +17,20 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@types/sequelize": "^4.28.9",
+    "@types/validator": "^13.1.0",
     "@types/ws": "^7.2.5",
     "ascii-table": "0.0.9",
     "discord-bot-express": "^1.1.0",
     "discord.js": "^12.2.0",
     "discord.js-pagination": "^1.0.2",
-    "pokemon": "^2.0.2"
+    "pokemon": "^2.0.2",
+    "sequelize": "^6.2.4",
+    "sqlite3": "^5.0.0"
   },
   "devDependencies": {
     "@types/jasmine": "^3.5.3",
-    "@types/node": "^13.7.1",
+    "@types/node": "^13.13.12",
     "jasmine": "^3.5.0",
     "jasmine-console-reporter": "^3.1.0",
     "ts-node": "^8.6.2",

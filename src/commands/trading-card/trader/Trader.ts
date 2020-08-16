@@ -1,26 +1,31 @@
 import { CardManager } from "../cards/CardManager";
 import { Mathf } from "../utils/Mathf";
-import { Rarity } from "../drop-generation/Rarity";
 import { GoldSystem } from "../systems/gold/GoldSystem";
 import { Card } from "../cards/Card";
 import { PackManager } from "../packs/PackManager";
 import { Pack } from "../packs/Pack";
 import { Player } from "../player/Player";
 import { GameConstants } from "../global/GameConstants";
+import { Broadcaster } from "../broadcaster/Broadcaster";
 
 export class Trader {
     needIds:Set<number>;
-
-    constructor() {
+    needCapacity:number;
+    message:string;
+    constructor(message:string,needCapacity:number=GameConstants.TRADER_NEED_CAPACITY) {
         this.needIds=new Set<number>();
+        this.message=message;
+        this.needCapacity=needCapacity;
         this.fillNeedIds();
     }
 
     fillNeedIds(){
-        const idsRange=[1,CardManager.getInstance().cards.size];
-        for (let i = 0; i < GameConstants.TRADER_NEED_CAPACITY; i++) {
-            const random=Mathf.randomInt(idsRange[0],idsRange[1]);
-            this.needIds.add(random);
+        for (let i = 0; i < this.needCapacity; i++) {
+            const packsRange=[1,PackManager.getInstance().packs.size];
+            const rngPack:Pack=PackManager.getInstance().getItemById(Mathf.randomInt(packsRange[0],packsRange[1]));
+            const rngCardPosition=Mathf.randomInt(0,rngPack.possibleItemsIds.length-1);
+            const cardId=rngPack.possibleItemsIds[rngCardPosition];
+            this.needIds.add(cardId);
         }
     }
 
@@ -49,7 +54,7 @@ export class Trader {
     forceRestock(){
         this.needIds=new Set<number>();
         this.fillNeedIds();
-        console.log("Trader Restocked");
+        Broadcaster.getInstance().broadcast(this.message);
     }
 
     buyBounty(player:Player,card:Card){
@@ -60,6 +65,7 @@ export class Trader {
             if(this.isEmpty()){
                 this.forceRestock();
             }
+            player.addExperience(GameConstants.EXP_BOUNTY);
             return true;
         }else{
             return false;

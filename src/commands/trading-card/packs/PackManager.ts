@@ -10,7 +10,7 @@ export class PackManager implements IManager<Pack>{
     packs:Map<number,Pack>;
     packsNameIdMap:Map<string,number>;
 
-    constructor(){
+    private constructor(){
         this.packs=new Map<number,Pack>();
         this.packsNameIdMap=new Map<string,number>();
         this.fillMaps();
@@ -54,4 +54,6 @@ export class PackManager implements IManager<Pack>{
         }
         return undefined;
     }
+
+    
 }

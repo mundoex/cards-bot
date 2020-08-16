@@ -36,6 +36,7 @@ export abstract class ItemContainer<T>{
 
     remove(t:T,ammount:number=1): void {
         if(this.contains(t)){
+            const currentAmmount=this.items.get(t);
             if(this.items.get(t)===ammount){
                 this.items.delete(t);
             }else{
@@ -48,5 +49,13 @@ export abstract class ItemContainer<T>{
         for (const key of this.items.keys()) {
             this.items.delete(key);
         }
+    }
+
+    totalItemsAmmount() : number{
+        let totalAmmount=0;
+        for(let ammount of this.items.values()){
+            totalAmmount+=ammount;
+        }
+        return totalAmmount;
     }
 }

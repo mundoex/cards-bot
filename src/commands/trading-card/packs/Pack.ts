@@ -47,6 +47,10 @@ export class Pack extends ItemGenerator<Card>{
         return GoldSystem.starsToGold(this.rarity.stars);
     }
 
+    get lastCardId(){
+        return this.possibleItemsIds[this.possibleItemsIds.length-1];
+    }
+
     private static shouldEndDryStreak(dryStreak:number) : boolean{
         return dryStreak>=GameConstants.DRY_STREAK_THRESHOLD;
     }

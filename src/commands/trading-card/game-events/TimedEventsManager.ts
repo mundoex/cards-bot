@@ -37,9 +37,12 @@ export class TimedEventsManager{
     }
 
     private static rewardAllCachedPlayers(playersHandler:PlayerHandler){
-        playersHandler.cachedPlayersMap.forEach((player:Player,playerId:string)=>{
-            player.addRewards();
-        });
-        console.log("Rewards Added");
+        if(playersHandler){
+            playersHandler.playerAPI.cachedPlayersMap.forEach((player:Player,playerId:string)=>{
+                player.addRewards();
+                player.save();
+            });
+            console.log("Rewards Added");
+        }
     }
 }
